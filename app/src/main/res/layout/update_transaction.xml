@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".onlinecustomer.updateTransaction">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/transactionbg"
+            >
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/back"
+                android:id="@+id/upbackbtn"
+                />
+            <TextView
+                android:id="@+id/uptransactiontext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
+                android:text="Update Transaction"
+                android:textAlignment="center"
+                android:textColor="@color/texttitle"
+                android:textSize="32sp" />
+
+            <ImageView
+                android:id="@+id/uprupee"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_below="@+id/uptransactiontext"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
+                android:src="@drawable/rupee" />
+            <EditText
+                android:textSize="25sp"
+                android:id="@+id/upamount"
+                android:layout_width="match_parent"
+                android:inputType="number"
+                android:layout_height="50dp"
+                android:hint="Add Amount"
+                android:backgroundTint="@color/toolbarc"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="15dp"
+                android:textColor="@color/gradcolor1"
+                android:layout_below="@id/uptransactiontext"
+                android:textColorHint="@color/hintcolor"
+                android:layout_toRightOf="@id/uprupee"/>
+            <ImageView
+                android:id="@+id/updesc"
+                android:layout_margin="15dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/description"
+                android:layout_below="@+id/uprupee"
+                />
+            <EditText
+                android:id="@+id/updescription"
+                android:textSize="25sp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Add Description"
+                android:inputType="text"
+                android:backgroundTint="@color/toolbarc"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="15dp"
+                android:textColor="@color/black"
+                android:layout_below="@id/upamount"
+                android:textColorHint="@color/hintcolor"
+                android:layout_toRightOf="@id/updesc"/>
+            <RelativeLayout
+                android:id="@+id/rl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/updescription"
+                android:gravity="center"
+                >
+                <ImageView
+                    android:id="@+id/upcalander"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/calendar" />
+                <TextView
+                    android:id="@+id/update"
+                    android:layout_marginLeft="10dp"
+                    android:layout_centerVertical="true"
+                    android:textSize="18sp"
+                    android:layout_toRightOf="@id/upcalander"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="23/08/2022"
+                    android:textColor="@color/hintcolor"/>
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="10dp"
+        >
+        <Button
+            android:layout_width="170dp"
+            android:layout_height="60dp"
+            android:text="Delete"
+            android:gravity="center"
+            android:id="@+id/updelete"
+            android:backgroundTint="#FF0016"
+            />
+
+        <Button
+            android:layout_marginLeft="20dp"
+            android:layout_toRightOf="@+id/updelete"
+            android:layout_width="170dp"
+            android:layout_height="60dp"
+            android:text="update"
+            android:backgroundTint="@color/green"
+            android:id="@+id/upupdate"/>
+
+
+    </RelativeLayout>
+        </RelativeLayout>

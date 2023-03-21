@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "707104142106",
+    "project_id": "ledger-diary",
+    "storage_bucket": "ledger-diary.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:707104142106:android:9a7dd1f4cde32951baf2a3",
+        "android_client_info": {
+          "package_name": "com.example.Ledgerdiary"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "707104142106-plo8gkfa730rrammf4q23rh6t0ckoq7v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCY-mmUHMYJxl8sl9TUzrHHVb4sUmc1gao"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "707104142106-plo8gkfa730rrammf4q23rh6t0ckoq7v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

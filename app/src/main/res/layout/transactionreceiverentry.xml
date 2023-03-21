@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="85dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    android:layout_marginTop="1dp"
+    android:layout_marginEnd="1dp"
+    android:backgroundTint="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        >
+        <RelativeLayout
+            android:id="@+id/date"
+            android:layout_width="51dp"
+            android:layout_height="51dp"
+            android:background="@drawable/datebg"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/datebg"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/month"
+                    android:text="March"
+                    android:textAlignment="center"
+                    android:textSize="12sp"
+                    android:textColor="@color/white"
+                    android:background="@color/gradcolor1"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"/>
+                <TextView
+                    android:id="@+id/day"
+                    android:background="#F4F1F1"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:textSize="21sp"
+                    android:text="04"
+                    android:textAlignment="center"
+                    android:textColor="#030F55"
+                    />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/date"
+            android:layout_centerVertical="true">
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:layout_margin="1dp"
+                android:textSize="24sp"
+                android:textColor="@color/black"
+                />
+            <TextView
+                android:id="@+id/currenttime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/description"
+                android:layout_margin="1dp"
+                android:text="12:48 AM"
+                android:textColor="@color/hintcolor"
+                />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="120dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
+            android:background="@drawable/amountbg"
+            >
+
+            <TextView
+                android:id="@+id/tamount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="250"
+                android:textColor="@color/green"
+                android:textSize="30sp"
+                android:textStyle="bold" />
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_toRightOf="@id/tamount"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/left"
+                />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</androidx.cardview.widget.CardView>
