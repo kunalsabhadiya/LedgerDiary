@@ -4,7 +4,9 @@ package com.example.Ledgerdiary.onlinecustomer;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +18,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.Ledgerdiary.Dashboard;
 import com.example.Ledgerdiary.R;
+import com.example.Ledgerdiary.login;
+import com.example.Ledgerdiary.sqliteDbhelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +29,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormatSymbols;
@@ -34,6 +40,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -61,11 +68,13 @@ public class updateTransaction extends AppCompatActivity {
 
         upcalander=findViewById(R.id.upcalander);
 
+
         String iamount = getIntent().getStringExtra("amount");
         String idescription=getIntent().getStringExtra("description");
         String datee=getIntent().getStringExtra("datee");
         String timestampp =getIntent().getStringExtra("timestamp");
-        String senderroom =getIntent().getStringExtra("senderroom");
+        String senderroom = getIntent().getStringExtra("senderroom");
+        String reciverroom = senderroom.substring(senderroom.length() - 28) + senderroom.substring(0, 28);
 
         upamount.setText(iamount);
         updescription.setText(idescription);
@@ -125,52 +134,123 @@ public class updateTransaction extends AppCompatActivity {
         upupdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String am = upamount.getText().toString();
-                String da = update.getText().toString();
-                String de = updescription.getText().toString();
-            /*   FirebaseDatabase.getInstance().getReference()
-                        .child("transactions").orderByChild("timestamp").equalTo(timestampp).addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                    childSnapshot.getRef().child("amount").setValue(am);
-                                    childSnapshot.getRef().child("description").setValue(de);
-                                    childSnapshot.getRef().child("date").setValue(da);
-                                    Toast.makeText(updateTransaction.this, "Transaction updated sucessfully", Toast.LENGTH_SHORT).show();
+                if( upamount.getText().toString().isEmpty()){
+                    upamount.requestFocus();
+                    upamount.setError("");
+                }else {
+                    String am = upamount.getText().toString();
+                    String da = update.getText().toString();
+                    String de = updescription.getText().toString();
+                    FirebaseDatabase.getInstance().getReference()
+                            .child("transactions").child(senderroom).orderByChild("timestamp").equalTo(Long.parseLong(timestampp)).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                    if (dataSnapshot.exists()) {
+                                        System.out.println("first :" + dataSnapshot.getKey());
+                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                            if (snapshot.exists() && Objects.equals(snapshot.child("senderId").getValue(), FirebaseAuth.getInstance().getUid())) {
+                                                System.out.println("secound :" + snapshot.getKey());
+                                                FirebaseDatabase.getInstance().getReference().child("transactions")
+                                                        .child(senderroom).child(Objects.requireNonNull(snapshot.getKey()))
+                                                        .child("amount").setValue(am);
+                                                FirebaseDatabase.getInstance().getReference().child("transactions")
+                                                        .child(senderroom).child(Objects.requireNonNull(snapshot.getKey()))
+                                                        .child("date").setValue(da);
+                                                FirebaseDatabase.getInstance().getReference().child("transactions")
+                                                        .child(senderroom).child(Objects.requireNonNull(snapshot.getKey()))
+                                                        .child("description").setValue(de);
+
+
+                                                FirebaseDatabase.getInstance().getReference()
+                                                        .child("transactions").child(reciverroom).orderByChild("timestamp").equalTo(Long.parseLong(timestampp)).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(@NonNull DataSnapshot idataSnapshot) {
+                                                                if (dataSnapshot.exists()) {
+                                                                    for (DataSnapshot isnapshot : idataSnapshot.getChildren()) {
+                                                                        if (isnapshot.exists() && Objects.equals(isnapshot.child("senderId").getValue(), FirebaseAuth.getInstance().getUid())) {
+                                                                            FirebaseDatabase.getInstance().getReference().child("transactions")
+                                                                                    .child(reciverroom).child(Objects.requireNonNull(isnapshot.getKey()))
+                                                                                    .child("amount").setValue(am);
+                                                                            FirebaseDatabase.getInstance().getReference().child("transactions")
+                                                                                    .child(reciverroom).child(Objects.requireNonNull(isnapshot.getKey()))
+                                                                                    .child("date").setValue(da);
+                                                                            FirebaseDatabase.getInstance().getReference().child("transactions")
+                                                                                    .child(reciverroom).child(Objects.requireNonNull(isnapshot.getKey()))
+                                                                                    .child("description").setValue(de);
+                                                                            Toast.makeText(updateTransaction.this, "Transaction updated sucessfully", Toast.LENGTH_SHORT).show();
+                                                                            finish();
+                                                                        }
+                                                                    }
+                                                                }
+
+
+                                                            }
+
+                                                            @Override
+                                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                                            }
+
+                                                        });
+                                            }
+                                        }
+                                    }
+
+
                                 }
-                            }
 
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
 
-                            }
+                                }
 
-                        });
+                            });
+                }
 
-                */
             }
 
         });
+
+
         updelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                FirebaseDatabase.getInstance().getReference()
-                        .child("transactions").orderByChild("timestamp").equalTo(timestampp).addListenerForSingleValueEvent(new ValueEventListener() {
+                FirebaseDatabase.getInstance().getReference().child("transactions").child(senderroom).orderByChild("timestamp")
+                        .equalTo(Long.parseLong(timestampp)).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                    String senderid=(String)childSnapshot.child("senderId").getValue();
-                                    System.out.println("ok"+senderid);
-                                    if (FirebaseAuth.getInstance().getCurrentUser().getUid().equals(senderid)) {
-                                        childSnapshot.getRef().removeValue();
-                                        Toast.makeText(updateTransaction.this, "Transaction deleted sucessfully", Toast.LENGTH_SHORT).show();
-                                        Log.e("inner", "f");
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                if(snapshot.exists()){
+                                    for(DataSnapshot snapshot1:snapshot.getChildren()){
+                                        if(snapshot1.exists() && Objects.equals(snapshot1.child("senderId").getValue(), FirebaseAuth.getInstance().getUid())){
+                                            snapshot1.getRef().removeValue();
+                                            upamount.setText("");
+                                            upupdate.setText("");
+                                            FirebaseDatabase.getInstance().getReference().child("transactions").child(reciverroom).orderByChild("timestamp")
+                                                    .equalTo(Long.parseLong(timestampp)).addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot isnapshot) {
+                                                            if(snapshot.exists()){
+                                                                for(DataSnapshot isnapshot1:isnapshot.getChildren()){
+                                                                    System.out.println("secound "+isnapshot1.getKey());
+                                                                    if(isnapshot1.exists() && Objects.equals(isnapshot1.child("senderId").getValue(), FirebaseAuth.getInstance().getUid())){
+                                                                        isnapshot1.getRef().removeValue();
+                                                                        Toast.makeText(getApplicationContext(),"Entry deleted sucessfully",Toast.LENGTH_SHORT).show();
+                                                                        finish();
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                                        }
+
+                                                    });
+                                        }
                                     }
                                 }
-
-
                             }
 
                             @Override
@@ -178,13 +258,15 @@ public class updateTransaction extends AppCompatActivity {
 
                             }
                         });
-                finish();
-        }
+            }
         });
 
 
 
 
 
+
         }
+
+
     }

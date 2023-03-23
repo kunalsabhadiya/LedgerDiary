@@ -7,8 +7,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
@@ -20,6 +23,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.Ledgerdiary.dashboardFragment.offlineuser;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -77,39 +81,45 @@ public class contactselecting extends AppCompatActivity {
                                   .addListenerForSingleValueEvent(new ValueEventListener() {
                                       @Override
                                       public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                          if(snapshot.exists() && !Objects.equals(snapshot.getKey(), FirebaseAuth.getInstance().getUid())){
-                                                  FirebaseDatabase.getInstance().getReference().child("users")
-                                                          .child(FirebaseAuth.getInstance().getUid()).child("customer")
-                                                          .child(finalnumber)
-                                                          .child("Cphonenumber")
-                                                          .setValue(finalnumber);
+                                          System.out.println(snapshot.child("phonenumber").getValue());
+                                          if(snapshot.exists()) {
+                                              for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                                                  if (!Objects.equals(snapshot1.getKey(), FirebaseAuth.getInstance().getUid())) {
+                                                      FirebaseDatabase.getInstance().getReference().child("users")
+                                                              .child(FirebaseAuth.getInstance().getUid()).child("customer")
+                                                              .child(finalnumber)
+                                                              .child("Cphonenumber")
+                                                              .setValue(finalnumber);
 
-                                                  FirebaseDatabase.getInstance().getReference().child("users")
-                                                          .child(FirebaseAuth.getInstance().getUid()).child("customer")
-                                                          .child(finalnumber)
-                                                          .child("Cname").setValue(addname.getText().toString());
-                                              FirebaseDatabase.getInstance().getReference().child("users")
-                                                      .child(FirebaseAuth.getInstance().getUid()).child("customer")
-                                                      .child(finalnumber)
-                                                      .child("Ctamount").setValue(0);
-                                              for (DataSnapshot childSnapshot : snapshot.getChildren()) {
-                                                  String otherUserId = childSnapshot.getKey();
-                                                  String otherimageuri = childSnapshot.child("imageUri").getValue().toString();
-                                                  FirebaseDatabase.getInstance().getReference().child("users")
-                                                          .child(FirebaseAuth.getInstance().getUid()).child("customer")
-                                                          .child(finalnumber)
-                                                          .child("Cuid").setValue(otherUserId);
-                                                  FirebaseDatabase.getInstance().getReference().child("users")
-                                                          .child(FirebaseAuth.getInstance().getUid()).child("customer")
-                                                          .child(finalnumber)
-                                                          .child("Cimageuri").setValue(otherimageuri);
+                                                      FirebaseDatabase.getInstance().getReference().child("users")
+                                                              .child(FirebaseAuth.getInstance().getUid()).child("customer")
+                                                              .child(finalnumber)
+                                                              .child("Cname").setValue(addname.getText().toString());
+                                                      FirebaseDatabase.getInstance().getReference().child("users")
+                                                              .child(FirebaseAuth.getInstance().getUid()).child("customer")
+                                                              .child(finalnumber)
+                                                              .child("Ctamount").setValue(0);
+                                                      for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                                                          String otherUserId = childSnapshot.getKey();
+                                                          String otherimageuri = childSnapshot.child("imageUri").getValue().toString();
+                                                          FirebaseDatabase.getInstance().getReference().child("users")
+                                                                  .child(FirebaseAuth.getInstance().getUid()).child("customer")
+                                                                  .child(finalnumber)
+                                                                  .child("Cuid").setValue(otherUserId);
+                                                          FirebaseDatabase.getInstance().getReference().child("users")
+                                                                  .child(FirebaseAuth.getInstance().getUid()).child("customer")
+                                                                  .child(finalnumber)
+                                                                  .child("Cimageuri").setValue(otherimageuri);
+                                                      }
+
+                                                      Toast.makeText(contactselecting.this, "Contact added successfully", Toast.LENGTH_SHORT).show();
+                                                      addnum.setText("");
+                                                      addname.setText("");
+                                                      startActivity(new Intent(contactselecting.this, Dashboard.class));
+                                                  }
                                               }
-
-                                                  Toast.makeText(contactselecting.this,"Contact added successfully",Toast.LENGTH_SHORT).show();
-                                                  addnum.setText("");
-                                              addname.setText("");
-                                              startActivity(new Intent(contactselecting.this,Dashboard.class));
-                                          }else{
+                                          }
+                                                 else{
                                               sqliteDbhelper myDB = new sqliteDbhelper(contactselecting.this);
                                               myDB.addCustomer(addname.getText().toString().trim(),
                                                       finalnumber);
@@ -169,6 +179,14 @@ public class contactselecting extends AppCompatActivity {
                         }
                     }
                 }
+        }
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        if (!isConnected) {
+            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "No internet connection", Snackbar.LENGTH_LONG);
+            snackbar.show();
         }
     }
 }

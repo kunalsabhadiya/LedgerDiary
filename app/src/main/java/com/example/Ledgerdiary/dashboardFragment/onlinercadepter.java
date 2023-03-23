@@ -30,6 +30,7 @@ public class onlinercadepter extends RecyclerView.Adapter<onlinercadepter.ViewHo
     ArrayList<onlinemodel> list;
 
 
+
     public onlinercadepter(Context context, ArrayList<onlinemodel> list) {
         this.context = context;
         this.list = list;
@@ -49,7 +50,6 @@ public class onlinercadepter extends RecyclerView.Adapter<onlinercadepter.ViewHo
         holder.number.setText(model.getCphonenumber());
         Picasso.get().load(model.getCimageuri()).placeholder(R.drawable.profileimage).into(holder.image);
         int amount=model.getCtamount();
-        System.out.println(amount);
         if(amount<0){
             holder.entryamount.setText(String.valueOf(Math.abs(amount)));
             holder.entryamount.setTextColor(ContextCompat.getColor(context,R.color.green));
@@ -76,7 +76,6 @@ public class onlinercadepter extends RecyclerView.Adapter<onlinercadepter.ViewHo
 
 
     }
-
     @Override
     public int getItemCount() {
         return list.size();

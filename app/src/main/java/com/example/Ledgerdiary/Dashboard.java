@@ -11,11 +11,14 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,7 +31,9 @@ import android.widget.Toast;
 import com.example.Ledgerdiary.dashboardFragment.fragmentadepter;
 
 import com.example.Ledgerdiary.dashboardFragment.onlineuser;
+import com.example.Ledgerdiary.group.addgroupentry;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -53,8 +58,7 @@ public class Dashboard extends AppCompatActivity {
   Animation rotateopen,rotateclose,slideleft,slideright;
   Menu menu;
   Boolean isclicked=true;
-  TextView onlinetotal,reciveonline,sendeonline;
-    int dotamount=0,dorsmount=0,dosamount=0;
+  TextView onlinetotal,reciveonline,sendonline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +92,7 @@ public class Dashboard extends AppCompatActivity {
         reminder=findViewById(R.id.reminder);
         onlinetotal=findViewById(R.id.dashboardtotalonline);
         reciveonline=findViewById(R.id.onlinerecive);
-        sendeonline=findViewById(R.id.onlinegive);
+        sendonline=findViewById(R.id.onlinegive);
 
 
         rotateopen= AnimationUtils.loadAnimation(this,R.anim.rotate_add_btn_open);
@@ -97,55 +101,56 @@ public class Dashboard extends AppCompatActivity {
         slideright= AnimationUtils.loadAnimation(this,R.anim.rotate_slide_right);
 
 
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageSelected(int position) {
-               if(fragmentadepter.getPageTitle(position).equals("online")){
-                   FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid())
-                           .child("customer").addValueEventListener(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("users")
+                           .child(FirebaseAuth.getInstance().getUid()).child("onlineamount")
+                           .child("give").addValueEventListener(new ValueEventListener() {
                                @Override
                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                   for(DataSnapshot snapshot1: snapshot.getChildren()){
-                                       int verifynum=Integer.parseInt(snapshot1.child("Ctamount").getValue().toString());
-                                       dotamount+=verifynum;
-                                       if(verifynum>0){
-                                           dorsmount+=verifynum;
-                                       }else{
-                                           dosamount+=Math.abs(verifynum);
-                                       }
-                                   }
-                                   onlinetotal.setText(String.valueOf(dotamount));
-                                   sendeonline.setText(String.valueOf(dosamount));
-                                   reciveonline.setText(String.valueOf(dorsmount));
-
+                                   sendonline.setText(String.valueOf(snapshot.getValue()));
                                }
 
                                @Override
                                public void onCancelled(@NonNull DatabaseError error) {
-                                   Toast.makeText(Dashboard.this, "something went wrong", Toast.LENGTH_SHORT).show();
+
                                }
                            });
-               } else  {
-                   dotamount=0;
-                   dorsmount=0;
-                   dosamount=0;
-               }
+                   FirebaseDatabase.getInstance().getReference().child("users")
+                           .child(FirebaseAuth.getInstance().getUid()).child("onlineamount")
+                           .child("got").addValueEventListener(new ValueEventListener() {
+                       @Override
+                       public void onDataChange(@NonNull DataSnapshot snapshot) {
+                           reciveonline.setText(String.valueOf(snapshot.getValue()));
+                       }
 
-            }
+                       @Override
+                       public void onCancelled(@NonNull DatabaseError error) {
 
+                       }
+                   });
+                   FirebaseDatabase.getInstance().getReference().child("users")
+                           .child(FirebaseAuth.getInstance().getUid()).child("onlineamount")
+                           .child("total").addValueEventListener(new ValueEventListener() {
+                       @Override
+                       public void onDataChange(@NonNull DataSnapshot snapshot) {
+                           onlinetotal.setText(String.valueOf(snapshot.getValue()));
+                       }
+
+                       @Override
+                       public void onCancelled(@NonNull DatabaseError error) {
+
+                       }
+                   });
+
+
+
+
+
+        addgroup.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
+            public void onClick(View v) {
+                startActivity(new Intent(Dashboard.this, addgroupentry.class));
             }
         });
-
-
-
 
         addentry.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -192,6 +197,14 @@ public class Dashboard extends AppCompatActivity {
               startActivity(new Intent(Dashboard.this,profile.class));
           }
       });
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        if (!isConnected) {
+            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "No internet connection", Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
 
     }
 
@@ -269,6 +282,7 @@ public class Dashboard extends AppCompatActivity {
 
         return true;
     }
+
 
     @Override
     public void onBackPressed() {

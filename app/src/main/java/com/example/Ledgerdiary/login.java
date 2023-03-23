@@ -1,15 +1,23 @@
 package com.example.Ledgerdiary;
 import androidx.annotation.NonNull;
         import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
-        import android.os.Bundle;
+import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.Bundle;
         import android.view.View;
         import android.widget.Button;
         import android.widget.EditText;
         import android.widget.ProgressBar;
         import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.FirebaseException;
         import com.google.firebase.auth.FirebaseAuth;
         import com.google.firebase.auth.PhoneAuthCredential;
@@ -38,6 +46,15 @@ public class login extends AppCompatActivity {
         mAuth=FirebaseAuth.getInstance();
         ccp = findViewById(R.id.ccp);
         ccp.registerCarrierNumberEditText(mobilenumbtf);
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+
+        if (!isConnected) {
+            Snackbar snackbar = Snackbar.make(findViewById(android.R.id.content), "No internet connection", Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
+        requestsmspermission();
 
         getotp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +107,17 @@ public class login extends AppCompatActivity {
                         .setCallbacks(mCallbacks)
                         .build();
         PhoneAuthProvider.verifyPhoneNumber(options);
+    }
+    private void requestsmspermission() {
+        String smspermission = Manifest.permission.RECEIVE_SMS;
+        int grant = ContextCompat.checkSelfPermission(this,smspermission);
+        //check if read SMS permission is granted or not
+        if(grant!= PackageManager.PERMISSION_GRANTED)
+        {
+            String[] permission_list = new String[1];
+            permission_list[0]=smspermission;
+            ActivityCompat.requestPermissions(this,permission_list,1);
+        }
     }
 
 

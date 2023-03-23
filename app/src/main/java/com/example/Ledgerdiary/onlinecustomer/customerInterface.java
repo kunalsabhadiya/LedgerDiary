@@ -37,7 +37,7 @@ RelativeLayout expense;
 RecyclerView rctransaction;
 ArrayList<transactionmodel> transactionlist;
 ProgressBar pg;
-int famount;
+int famount=0;
 
 transactionadepter transactionadepter;
     @Override
@@ -74,6 +74,12 @@ transactionadepter transactionadepter;
 
         transactionlist =new ArrayList<>();
         transactionadepter=new transactionadepter(this,transactionlist,citotal,reciveruid);
+//      transactionadepter.setOnAdepterInterraction(new transactionadepter.OnAdepterInterraction() {
+//           @Override
+//           public void onTouchListner(int position) {
+//               famount=0;
+//           }
+//       });
 
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this);
         linearLayoutManager.setStackFromEnd(true);
@@ -160,5 +166,17 @@ transactionadepter transactionadepter;
 
 
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        famount = 0;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        famount=0;
     }
 }

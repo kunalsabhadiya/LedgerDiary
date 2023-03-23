@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/mainlayout"
+    tools:context=".group.addgroupentry">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/transactionbg"
+        >
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/back"
+            android:id="@+id/gebackbtn"
+            />
+        <TextView
+            android:id="@+id/getransactiontext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:text="Add group entry"
+            android:paddingLeft="40dp"
+            android:textColor="@color/texttitle"
+            android:textSize="32sp" />
+        <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_alignParentRight="true"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/check"
+        android:id="@+id/gesubmit"
+        />
+
+        <ImageView
+            android:id="@+id/gerupee"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/getransactiontext"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:src="@drawable/rupee" />
+        <EditText
+            android:textSize="25sp"
+            android:id="@+id/geamount"
+            android:layout_width="match_parent"
+            android:inputType="number"
+            android:layout_height="50dp"
+            android:hint="Add Amount"
+            android:backgroundTint="@color/toolbarc"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginRight="40dp"
+            android:textColor="@color/gradcolor1"
+            android:layout_below="@id/getransactiontext"
+            android:textColorHint="@color/hintcolor"
+            android:layout_toRightOf="@id/gerupee"
+            />
+
+        <ImageView
+            android:id="@+id/gedesc"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/gerupee"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:src="@drawable/description" />
+        <EditText
+            android:id="@+id/gedescription"
+            android:textSize="25sp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Add Description"
+            android:inputType="text"
+            android:backgroundTint="@color/toolbarc"
+            android:layout_marginBottom="15dp"
+            android:layout_marginRight="40dp"
+            android:textColor="@color/black"
+            android:layout_below="@id/geamount"
+            android:textColorHint="@color/hintcolor"
+            android:layout_toRightOf="@id/gedesc"/>
+        <RelativeLayout
+            android:id="@+id/gerl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/gedescription"
+            android:gravity="center"
+            >
+            <ImageView
+                android:id="@+id/gecalander"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/calendar" />
+            <TextView
+                android:id="@+id/gedate"
+                android:layout_marginLeft="10dp"
+                android:layout_centerVertical="true"
+                android:textSize="18sp"
+                android:layout_toRightOf="@id/gecalander"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="23/08/2022"
+                android:textColor="@color/hintcolor"/>
+
+        </RelativeLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/gerl"
+            android:text="Selected customer"
+            android:textColor="@color/black"
+            android:id="@+id/tvselectedtext"
+            android:textAlignment="center"
+            android:layout_marginTop="15dp"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            />
+         <androidx.recyclerview.widget.RecyclerView
+             android:id="@+id/geselectedrc"
+             android:layout_width="match_parent"
+             android:layout_height="100dp"
+             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+             android:scrollbars="horizontal"
+             tools:listitem="@layout/geprofile"
+             android:background="#ECE8E8"
+             android:layout_below="@+id/tvselectedtext"
+             />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add person"
+            android:id="@+id/geaddperson"
+            android:layout_below="@+id/geselectedrc"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:layout_margin="3dp"
+/>
+  <androidx.recyclerview.widget.RecyclerView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_below="@+id/geaddperson"
+      android:id="@+id/gecustomerlistrc"
+      tools:listitem="@layout/gecustomerlist"
+      android:layout_margin="10dp"
+      android:background="@drawable/bottomlayoutbg"
+      />
+
+
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

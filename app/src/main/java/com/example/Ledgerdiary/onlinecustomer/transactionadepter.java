@@ -34,9 +34,13 @@ public class transactionadepter extends RecyclerView.Adapter {
     int totalamount=0;
     TextView citotal;
     String reciveruid;
+    OnAdepterInterraction onAdepterInterraction;
 
+    public void setOnAdepterInterraction(OnAdepterInterraction onAdepterInterraction) {
+        this.onAdepterInterraction = onAdepterInterraction;
+    }
 
-    public transactionadepter(Context context, ArrayList<transactionmodel> transactionlist,TextView citotal,String reciveruid) {
+    public transactionadepter(Context context, ArrayList<transactionmodel> transactionlist, TextView citotal, String reciveruid) {
         this.context = context;
         this.transactionlist = transactionlist;
         this.citotal = citotal;
@@ -121,6 +125,7 @@ public class transactionadepter extends RecyclerView.Adapter {
 
     }
 
+
     @Override
     public int getItemCount() {
         return transactionlist.size();
@@ -137,12 +142,18 @@ public class transactionadepter extends RecyclerView.Adapter {
         }
     }
 
-    class senderViewHolder extends RecyclerView.ViewHolder{
+    class senderViewHolder extends RecyclerView.ViewHolder {
         TextView time,description,amount,day,month;
 
 
         public senderViewHolder(@NonNull View itemView) {
             super(itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onAdepterInterraction.onTouchListner(getAdapterPosition());
+                }
+            });
             time=itemView.findViewById(R.id.currenttime);
             description=itemView.findViewById(R.id.description);
             amount=itemView.findViewById(R.id.tamount);
@@ -162,4 +173,8 @@ public class transactionadepter extends RecyclerView.Adapter {
             month=itemView.findViewById(R.id.month);
         }
     }
+    public interface OnAdepterInterraction{
+        void onTouchListner(int position);
+    }
+
 }

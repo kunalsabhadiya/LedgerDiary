@@ -32,6 +32,7 @@ DatabaseReference reference;
 onlinercadepter adepter;
 ArrayList<onlinemodel> list;
 ProgressBar onlinepg;
+int total=0,give=0,got=0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,9 +55,29 @@ ProgressBar onlinepg;
                for (DataSnapshot snapshot1:snapshot.getChildren()){
                    onlinemodel model=snapshot1.getValue(onlinemodel.class);
                    list.add(model);
+                   assert model != null;
+                   int amount=model.getCtamount();
+                   total+=amount;
+                   if(amount<0){
+                       give+=Math.abs(amount);
+                   }else{
+                       got+=amount;
+                   }
+                   System.out.println(amount);
                }
                adepter.notifyDataSetChanged();
+               FirebaseDatabase.getInstance().getReference().child("users")
+                       .child(FirebaseAuth.getInstance().getUid()).child("onlineamount")
+                       .child("give").setValue(give);
+               FirebaseDatabase.getInstance().getReference().child("users")
+                       .child(FirebaseAuth.getInstance().getUid()).child("onlineamount")
+                       .child("got").setValue(got);
+               FirebaseDatabase.getInstance().getReference().child("users")
+                       .child(FirebaseAuth.getInstance().getUid()).child("onlineamount")
+                       .child("total").setValue(total);
+               give=got=total=0;
                onlinepg.setVisibility(View.GONE);
+
 
            }
 
@@ -67,9 +88,11 @@ ProgressBar onlinepg;
        });
 
 
+
         onlinerc.setLayoutManager(layoutManager);
         onlinerc.setAdapter(adepter);
     return view;
+
     }
 
 }

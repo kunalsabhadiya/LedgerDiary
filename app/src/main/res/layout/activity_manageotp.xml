@@ -9,21 +9,114 @@
     android:padding="20dp"
     android:background="@color/toolbarc"
     tools:context=".manageotp">
-  <EditText
-      android:id="@+id/otp"
+  <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:inputType="number"
-      android:hint="Enter otp.."
-      android:textSize="20dp"
-      />
+      android:layout_margin="20dp"
+      android:gravity="center"
+    android:orientation="horizontal">
+   <EditText
+       android:textStyle="bold"
+       android:id="@+id/ot1"
+     android:layout_width="50dp"
+     android:layout_height="50dp"
+       android:inputType="number"
+     android:hint="0"
+       android:textSize="18sp"
+       android:textColorHint="@color/grey"
+       android:textColor="@color/black"
+       android:textAlignment="center"
+     android:layout_margin="3dp"
+
+     android:layout_gravity="center"
+     android:background="@drawable/otpbg"/>
+    <EditText
+        android:textStyle="bold"
+        android:id="@+id/ot2"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:inputType="number"
+        android:hint="0"
+        android:textSize="18sp"
+        android:textColorHint="@color/grey"
+        android:layout_margin="3dp"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:background="@drawable/otpbg"/>
+    <EditText
+        android:textStyle="bold"
+        android:id="@+id/ot3"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:textSize="18sp"
+        android:textColorHint="@color/grey"
+        android:inputType="number"
+        android:hint="0"
+        android:layout_margin="3dp"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:background="@drawable/otpbg"/>
+    <EditText
+        android:textStyle="bold"
+        android:id="@+id/ot4"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:inputType="number"
+        android:textSize="18sp"
+        android:hint="0"
+        android:textColorHint="@color/grey"
+        android:layout_margin="3dp"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:background="@drawable/otpbg"/>
+    <EditText
+        android:textStyle="bold"
+        android:id="@+id/ot5"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:inputType="number"
+        android:hint="0"
+        android:layout_margin="3dp"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textColorHint="@color/grey"
+        android:layout_gravity="center"
+        android:background="@drawable/otpbg"/>
+    <EditText
+        android:textStyle="bold"
+        android:id="@+id/ot6"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:textSize="18sp"
+        android:textColorHint="@color/grey"
+        android:inputType="number"
+        android:hint="0"
+        android:layout_margin="3dp"
+        android:textColor="@color/black"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:background="@drawable/otpbg"/>
+
+  </LinearLayout>
+
     <Button
         android:id="@+id/verifybtn"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:textSize="20dp"
         android:padding="5dp"
         android:layout_margin="5dp"
+        android:background="@drawable/otpbg"
         android:text="Verify and sign in"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvotp"
+        android:textColor="@color/toolbarc"
         />
 </LinearLayout>

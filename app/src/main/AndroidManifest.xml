@@ -29,8 +29,8 @@
             android:exported="false" />
         <activity
             android:name=".onlinecustomer.addTransaction"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
 
         <receiver
             android:name=".otpfetch"
@@ -39,14 +39,16 @@
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
-
+        <activity
+            android:name=".group.addgroupentry"
+            android:exported="false" />
         <activity
             android:name=".onlinecustomer.customerInterface"
             android:exported="false" />
         <activity
             android:name=".login"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Splash"
             android:exported="true">
@@ -58,8 +60,8 @@
         </activity>
         <activity
             android:name=".profile"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".manageotp"
             android:exported="false" />
@@ -70,8 +72,8 @@
 
         <activity
             android:name=".contactselecting"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Dashboard"
             android:exported="false" />

@@ -6,12 +6,13 @@ import android.content.Intent;
 import android.provider.Telephony;
 import android.telephony.SmsMessage;
 import android.widget.EditText;
+import android.widget.TextView;
 
 public class otpfetch extends BroadcastReceiver {
-    private  static EditText editText;
-    public void setEditText(EditText meditText)
+    private  static TextView textView;
+    public void setEditText(TextView meditText)
     {
-        editText=meditText;
+        textView =meditText;
     }
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -19,7 +20,7 @@ public class otpfetch extends BroadcastReceiver {
         SmsMessage[] messages = Telephony.Sms.Intents.getMessagesFromIntent(intent);
         for (SmsMessage sms : messages) {
             String msg = sms.getMessageBody().replaceAll("[\\D]", "");
-            editText.setText(msg);
+            textView.setText(msg);
         }
     }
 }

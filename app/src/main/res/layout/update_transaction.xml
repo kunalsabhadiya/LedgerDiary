@@ -129,7 +129,7 @@
             android:layout_width="170dp"
             android:layout_height="60dp"
             android:text="update"
-            android:backgroundTint="@color/green"
+            android:backgroundTint="#26C82C"
             android:id="@+id/upupdate"/>
 
 
