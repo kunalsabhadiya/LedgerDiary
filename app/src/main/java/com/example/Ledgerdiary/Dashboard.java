@@ -20,6 +20,7 @@ import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +33,9 @@ import com.example.Ledgerdiary.dashboardFragment.fragmentadepter;
 
 import com.example.Ledgerdiary.dashboardFragment.onlineuser;
 import com.example.Ledgerdiary.group.addgroupentry;
+import com.example.Ledgerdiary.reminder.reminder;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
@@ -40,6 +44,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,10 +59,11 @@ public class Dashboard extends AppCompatActivity {
     Toolbar toolbar;
   ViewPager viewPager;
   TabLayout tabLayout;
-  FloatingActionButton addentry,addperson,addgroup,setting,reminder;
+  FloatingActionButton addentry,addperson,addgroup,setting,reminderbtn;
   Animation rotateopen,rotateclose,slideleft,slideright;
   Menu menu;
   Boolean isclicked=true;
+  int got=0,give=0,total=0;
   TextView onlinetotal,reciveonline,sendonline;
 
     @Override
@@ -74,6 +80,7 @@ public class Dashboard extends AppCompatActivity {
                 }
         );
 
+
         requestPermission();
         toolbar=findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -89,7 +96,7 @@ public class Dashboard extends AppCompatActivity {
         addgroup=findViewById(R.id.addgroup);
         addperson=findViewById(R.id.addperson);
         setting=findViewById(R.id.setting);
-        reminder=findViewById(R.id.reminder);
+        reminderbtn=findViewById(R.id.reminder);
         onlinetotal=findViewById(R.id.dashboardtotalonline);
         reciveonline=findViewById(R.id.onlinerecive);
         sendonline=findViewById(R.id.onlinegive);
@@ -99,7 +106,6 @@ public class Dashboard extends AppCompatActivity {
         rotateclose= AnimationUtils.loadAnimation(this,R.anim.rotate_add_btn_close);
         slideleft= AnimationUtils.loadAnimation(this,R.anim.rotate_slide_left);
         slideright= AnimationUtils.loadAnimation(this,R.anim.rotate_slide_right);
-
 
         FirebaseDatabase.getInstance().getReference().child("users")
                            .child(FirebaseAuth.getInstance().getUid()).child("onlineamount")
@@ -145,6 +151,8 @@ public class Dashboard extends AppCompatActivity {
 
 
 
+
+
         addgroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,8 +168,8 @@ public class Dashboard extends AppCompatActivity {
                     addgroup.startAnimation(slideleft);
                     addperson.show();
                     addperson.startAnimation(slideleft);
-                    reminder.show();
-                    reminder.startAnimation(slideright);
+                    reminderbtn.show();
+                    reminderbtn.startAnimation(slideright);
                     setting.show();
                     setting.startAnimation(slideright);
                     addentry.startAnimation(rotateopen);
@@ -172,8 +180,8 @@ public class Dashboard extends AppCompatActivity {
                     addgroup.startAnimation(slideright);
                     addperson.hide();
                     addperson.startAnimation(slideright);
-                    reminder.hide();
-                    reminder.startAnimation(slideleft);
+                    reminderbtn.hide();
+                    reminderbtn.startAnimation(slideleft);
                     setting.hide();
                     setting.startAnimation(slideleft);
                     isclicked=true;
@@ -197,6 +205,15 @@ public class Dashboard extends AppCompatActivity {
               startActivity(new Intent(Dashboard.this,profile.class));
           }
       });
+
+      reminderbtn.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              startActivity(new Intent(Dashboard.this, reminder.class));
+          }
+      });
+
+
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
@@ -207,6 +224,7 @@ public class Dashboard extends AppCompatActivity {
         }
 
     }
+
 
     private void requestPermission(){
 
@@ -282,6 +300,7 @@ public class Dashboard extends AppCompatActivity {
 
         return true;
     }
+
 
 
     @Override

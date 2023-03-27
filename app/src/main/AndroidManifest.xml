@@ -25,6 +25,33 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".onlinecustomer.splashupdate"
+            android:exported="false" />
+        <activity
+            android:name=".onlinecustomer.splashdelete"
+            android:exported="false" />
+        <activity
+            android:name=".onlinecustomer.splashadd"
+            android:exported="false" />
+        <activity
+            android:name=".group.splashaddgroupentry"
+            android:exported="false" />
+        <activity
+            android:name=".reminder.reminder"
+            android:exported="false" />
+        <activity
+            android:name=".reminder.updatesingletimeentry"
+            android:exported="false" />
+        <activity
+            android:name=".reminder.updateoccurance"
+            android:exported="false" />
+        <activity
+            android:name=".reminder.addoccurance"
+            android:exported="false" />
+        <activity
+            android:name=".reminder.addsingletimeentry"
+            android:exported="false" />
+        <activity
             android:name=".onlinecustomer.updateTransaction"
             android:exported="false" />
         <activity
@@ -39,6 +66,7 @@
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
+
         <activity
             android:name=".group.addgroupentry"
             android:exported="false" />

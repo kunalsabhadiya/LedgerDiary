@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".reminder.updatesingletimeentry">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/transactionbg"
+    >
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/back"
+        android:id="@+id/upsinglebackbtn"
+        />
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/check"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/upsinglesubmitbtn"
+        />
+    <TextView
+        android:id="@+id/upsingletransactiontext"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:text="Update my reminder"
+        android:textAlignment="center"
+        android:textColor="@color/texttitle"
+        android:textSize="32sp" />
+
+    <ImageView
+        android:id="@+id/upsinglerupee"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/upsingletransactiontext"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
+        android:src="@drawable/rupee" />
+    <EditText
+        android:textSize="25sp"
+        android:id="@+id/upsingleamount"
+        android:layout_width="match_parent"
+        android:inputType="number"
+        android:layout_height="50dp"
+        android:hint="Add Amount"
+        android:backgroundTint="@color/toolbarc"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="30dp"
+        android:textColor="@color/gradcolor1"
+        android:layout_below="@id/upsingletransactiontext"
+        android:textColorHint="@color/hintcolor"
+        android:layout_toEndOf="@id/upsinglerupee"/>
+    <ImageView
+        android:id="@+id/upsingledesc"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/description"
+        android:layout_below="@+id/upsinglerupee"
+        />
+    <EditText
+        android:id="@+id/upsingledescription"
+        android:textSize="25sp"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:hint="Add Description"
+        android:inputType="text"
+        android:backgroundTint="@color/toolbarc"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="30dp"
+        android:textColor="@color/black"
+        android:layout_below="@id/upsingleamount"
+        android:textColorHint="@color/hintcolor"
+        android:layout_toEndOf="@id/upsingledesc"/>
+    <RelativeLayout
+        android:id="@+id/upsinglerl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/upsingledescription"
+        android:gravity="center"
+        >
+        <ImageView
+            android:id="@+id/upsinglecalander"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/calendar" />
+        <TextView
+            android:id="@+id/upsingledate"
+            android:layout_marginStart="10dp"
+            android:layout_centerVertical="true"
+            android:textSize="18sp"
+            android:layout_toEndOf="@id/upsinglecalander"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="23/08/2022"
+            android:textColor="@color/hintcolor"/>
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/upsinglerl"
+        android:layout_margin="15dp"
+        android:gravity="center"
+        >
+        <ImageView
+            android:id="@+id/upsingletimeimg"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/clock" />
+        <TextView
+            android:id="@+id/upsingletime"
+            android:layout_marginStart="10dp"
+            android:layout_centerVertical="true"
+            android:textSize="18sp"
+            android:layout_toEndOf="@id/upsingletimeimg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="10:00 AM"
+            android:textColor="@color/hintcolor"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="20dp"
+    android:layout_alignParentBottom="true"
+    >
+
+    <RelativeLayout
+        android:id="@+id/upsingledeletebtn"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/gradcolor1">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/delete" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/upsinglepaidbtn"
+        android:layout_below="@id/upsingledeletebtn"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="10dp"
+        android:background="@color/green"
+        >
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/paid"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            />
+    </RelativeLayout>
+
+
+
+</RelativeLayout>
+</RelativeLayout>

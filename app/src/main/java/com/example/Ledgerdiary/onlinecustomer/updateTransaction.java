@@ -57,15 +57,11 @@ public class updateTransaction extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.update_transaction);
         upbackbtn=findViewById(R.id.upbackbtn);
-
         upamount=findViewById(R.id.upamount);
         updescription=findViewById(R.id.updescription);
-
         update=findViewById(R.id.update);
-
         updelete=findViewById(R.id.updelete);
         upupdate=findViewById(R.id.upupdate);
-
         upcalander=findViewById(R.id.upcalander);
 
 
@@ -137,7 +133,11 @@ public class updateTransaction extends AppCompatActivity {
                 if( upamount.getText().toString().isEmpty()){
                     upamount.requestFocus();
                     upamount.setError("");
-                }else {
+                }else if(upamount.getText().toString().equals("0")){
+                    upamount.requestFocus();
+                    upamount.setError("Are you want to delete entry");
+                }
+                else {
                     String am = upamount.getText().toString();
                     String da = update.getText().toString();
                     String de = updescription.getText().toString();
@@ -178,7 +178,7 @@ public class updateTransaction extends AppCompatActivity {
                                                                             FirebaseDatabase.getInstance().getReference().child("transactions")
                                                                                     .child(reciverroom).child(Objects.requireNonNull(isnapshot.getKey()))
                                                                                     .child("description").setValue(de);
-                                                                            Toast.makeText(updateTransaction.this, "Transaction updated sucessfully", Toast.LENGTH_SHORT).show();
+                                                                            startActivity(new Intent(updateTransaction.this,splashupdate.class));
                                                                             finish();
                                                                         }
                                                                     }
@@ -225,7 +225,7 @@ public class updateTransaction extends AppCompatActivity {
                                         if(snapshot1.exists() && Objects.equals(snapshot1.child("senderId").getValue(), FirebaseAuth.getInstance().getUid())){
                                             snapshot1.getRef().removeValue();
                                             upamount.setText("");
-                                            upupdate.setText("");
+                                            updescription.setText("");
                                             FirebaseDatabase.getInstance().getReference().child("transactions").child(reciverroom).orderByChild("timestamp")
                                                     .equalTo(Long.parseLong(timestampp)).addListenerForSingleValueEvent(new ValueEventListener() {
                                                         @Override
@@ -235,7 +235,7 @@ public class updateTransaction extends AppCompatActivity {
                                                                     System.out.println("secound "+isnapshot1.getKey());
                                                                     if(isnapshot1.exists() && Objects.equals(isnapshot1.child("senderId").getValue(), FirebaseAuth.getInstance().getUid())){
                                                                         isnapshot1.getRef().removeValue();
-                                                                        Toast.makeText(getApplicationContext(),"Entry deleted sucessfully",Toast.LENGTH_SHORT).show();
+                                                                        startActivity(new Intent(updateTransaction.this,splashdelete.class));
                                                                         finish();
                                                                     }
                                                                 }

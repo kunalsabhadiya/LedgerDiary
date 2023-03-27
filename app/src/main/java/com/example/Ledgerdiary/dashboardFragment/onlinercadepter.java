@@ -26,11 +26,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class onlinercadepter extends RecyclerView.Adapter<onlinercadepter.ViewHolder> {
     Context context;
-    String iuri;
     ArrayList<onlinemodel> list;
 
 
-
+    public void setFilterdlist(ArrayList<onlinemodel> filterdlist) {
+        this.list=filterdlist;
+    }
     public onlinercadepter(Context context, ArrayList<onlinemodel> list) {
         this.context = context;
         this.list = list;
@@ -80,6 +81,8 @@ public class onlinercadepter extends RecyclerView.Adapter<onlinercadepter.ViewHo
     public int getItemCount() {
         return list.size();
     }
+
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         CircleImageView image;

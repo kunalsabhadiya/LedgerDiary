@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".reminder.addsingletimeentry">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/transactionbg"
+        >
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/back"
+            android:id="@+id/singlebackbtn"
+            />
+        <TextView
+            android:id="@+id/singletransactiontext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:text="Add my reminder"
+            android:textAlignment="center"
+            android:textColor="@color/texttitle"
+            android:textSize="32sp" />
+
+        <ImageView
+            android:id="@+id/singlerupee"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/singletransactiontext"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:src="@drawable/rupee" />
+        <EditText
+            android:textSize="25sp"
+            android:id="@+id/singleamount"
+            android:layout_width="match_parent"
+            android:inputType="number"
+            android:layout_height="50dp"
+            android:hint="Add Amount"
+            android:backgroundTint="@color/toolbarc"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="30dp"
+            android:textColor="@color/gradcolor1"
+            android:layout_below="@id/singletransactiontext"
+            android:textColorHint="@color/hintcolor"
+            android:layout_toEndOf="@id/singlerupee"/>
+        <ImageView
+            android:id="@+id/singledesc"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/description"
+            android:layout_below="@+id/singlerupee"
+            />
+        <EditText
+            android:id="@+id/singledescription"
+            android:textSize="25sp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Add Description"
+            android:inputType="text"
+            android:backgroundTint="@color/toolbarc"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="30dp"
+            android:textColor="@color/black"
+            android:layout_below="@id/singleamount"
+            android:textColorHint="@color/hintcolor"
+            android:layout_toEndOf="@id/singledesc"/>
+        <RelativeLayout
+            android:id="@+id/singlerl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/singledescription"
+            android:gravity="center"
+            >
+            <ImageView
+                android:id="@+id/singlecalander"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/calendar" />
+            <TextView
+                android:id="@+id/singledate"
+                android:layout_marginStart="10dp"
+                android:layout_centerVertical="true"
+                android:textSize="18sp"
+                android:layout_toEndOf="@id/singlecalander"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="23/08/2022"
+                android:textColor="@color/hintcolor"/>
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/singlerl"
+            android:layout_margin="15dp"
+            android:gravity="center"
+            >
+            <ImageView
+                android:id="@+id/singletimeimg"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/clock" />
+            <TextView
+                android:id="@+id/singletime"
+                android:layout_marginStart="10dp"
+                android:layout_centerVertical="true"
+                android:textSize="18sp"
+                android:layout_toEndOf="@id/singletimeimg"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10:00 AM"
+                android:textColor="@color/hintcolor"/>
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+ <RelativeLayout
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:layout_margin="20dp"
+     android:layout_alignParentBottom="true"
+     >
+    <Button
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:text="save"
+        android:id="@+id/singlesave"/>
+
+    </RelativeLayout>
+
+
+
+
+ </RelativeLayout>

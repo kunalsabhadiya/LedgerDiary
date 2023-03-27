@@ -3,6 +3,7 @@ package com.example.Ledgerdiary.dashboardFragment;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -32,6 +33,7 @@ DatabaseReference reference;
 onlinercadepter adepter;
 ArrayList<onlinemodel> list;
 ProgressBar onlinepg;
+SearchView onlinesearch;
 int total=0,give=0,got=0;
 
     @Override
@@ -41,6 +43,22 @@ int total=0,give=0,got=0;
       View view = inflater.inflate(R.layout.fragment_onlineuser, container, false);
        onlinepg=view.findViewById(R.id.onlinepg);
        onlinerc=view.findViewById(R.id.online_user_recyclerview);
+       onlinesearch=view.findViewById(R.id.onlinesearch);
+       onlinesearch.clearFocus();
+
+       onlinesearch.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+           @Override
+           public boolean onQueryTextSubmit(String query) {
+               return false;
+           }
+
+           @Override
+           public boolean onQueryTextChange(String newText) {
+             filterdlist(newText);
+               return true;
+           }
+
+       });
        LinearLayoutManager layoutManager=new LinearLayoutManager(getContext());
        onlinerc.setHasFixedSize(true);
        list=new ArrayList<>();
@@ -63,7 +81,6 @@ int total=0,give=0,got=0;
                    }else{
                        got+=amount;
                    }
-                   System.out.println(amount);
                }
                adepter.notifyDataSetChanged();
                FirebaseDatabase.getInstance().getReference().child("users")
@@ -93,6 +110,20 @@ int total=0,give=0,got=0;
         onlinerc.setAdapter(adepter);
     return view;
 
+    }
+
+    private void filterdlist(String newText) {
+        ArrayList<onlinemodel> filterdlist=new ArrayList<>();
+        for(onlinemodel model:list){
+            if(model.getCname().toLowerCase().contains(newText.toLowerCase())){
+                filterdlist.add(model);
+            }
+        }
+        if(filterdlist.isEmpty()){
+            Toast.makeText(getContext(), "No data found", Toast.LENGTH_SHORT).show();
+        }else{
+            adepter.setFilterdlist(filterdlist);
+        }
     }
 
 }

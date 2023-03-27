@@ -55,7 +55,7 @@
     <RelativeLayout
         android:id="@+id/addrlayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="600dp"
         android:layout_below="@id/addciname"
         android:background="@drawable/transactionbg"
         >

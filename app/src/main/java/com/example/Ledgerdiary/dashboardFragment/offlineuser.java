@@ -34,9 +34,7 @@ public class offlineuser extends Fragment {
      Cursor cursor = db.readAllData();
       c_name=new ArrayList<>();
       c_number=new ArrayList<>();
-        if(cursor.getCount() == 0){
-            Toast.makeText(getContext(), "no data found", Toast.LENGTH_SHORT).show();
-        }else{
+       if(cursor.getCount()!=0){
             while (cursor.moveToNext()){
                 c_name.add(cursor.getString(1));
                 c_number.add(cursor.getString(2));

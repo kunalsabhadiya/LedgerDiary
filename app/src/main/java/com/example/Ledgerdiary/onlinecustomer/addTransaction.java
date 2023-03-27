@@ -237,8 +237,7 @@ String addtamount;
 
                                                                 }
                                                             });
-
-
+                                                    startActivity(new Intent(addTransaction.this,splashadd.class));
                                                     finish();
                                                 }
                                             });
@@ -246,44 +245,6 @@ String addtamount;
                             });
 
 
-                   /* FirebaseDatabase.getInstance().getReference().child("Amounts")
-                            .child(senderroom)
-                            .child("tamount").addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    if(snapshot.exists()) {
-                                        addtamount = String.valueOf(Integer.parseInt(model.getAmount()) + Integer.parseInt(snapshot.getValue().toString()));
-                                        FirebaseDatabase.getInstance().getReference().child("Amounts")
-                                                .child(senderroom)
-                                                .child("tamount").setValue(addtamount).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        FirebaseDatabase.getInstance().getReference().child("Amounts")
-                                                                .child(reciverroom)
-                                                                .child("tamount").setValue(String.valueOf(-Integer.parseInt(addtamount)));
-                                                    }
-                                                });
-                                    }else{
-                                        FirebaseDatabase.getInstance().getReference().child("Amounts").child(senderroom)
-                                                .child("tamount").setValue(String.valueOf(Integer.parseInt(model.getAmount()))).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                    @Override
-                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                        FirebaseDatabase.getInstance().getReference().child("Amounts").child(reciverroom)
-                                                                .child("tamount").setValue(String.valueOf(-Integer.parseInt(model.getAmount())));
-                                                    }
-                                                });
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
-
-
-
-                    */
 
 
                 }

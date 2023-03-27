@@ -31,20 +31,18 @@ public class transactionadepter extends RecyclerView.Adapter {
     ArrayList<transactionmodel> transactionlist;
     int ITEM_SEND=1;
     int ITEM_RECEIVE=2;
-    int totalamount=0;
     TextView citotal;
     String reciveruid;
     OnAdepterInterraction onAdepterInterraction;
 
-    public void setOnAdepterInterraction(OnAdepterInterraction onAdepterInterraction) {
-        this.onAdepterInterraction = onAdepterInterraction;
-    }
 
-    public transactionadepter(Context context, ArrayList<transactionmodel> transactionlist, TextView citotal, String reciveruid) {
+
+    public transactionadepter(Context context, ArrayList<transactionmodel> transactionlist, TextView citotal, String reciveruid,OnAdepterInterraction onAdepterInterraction) {
         this.context = context;
         this.transactionlist = transactionlist;
         this.citotal = citotal;
         this.reciveruid = reciveruid;
+        this.onAdepterInterraction = onAdepterInterraction;
     }
 
     @NonNull
@@ -78,7 +76,6 @@ public class transactionadepter extends RecyclerView.Adapter {
             ViewHolder.amount.setText(model.getAmount());
             ViewHolder.description.setText(model.getDescription());
             ViewHolder.time.setText(formattedTime);
-            totalamount+=Integer.parseInt(model.getAmount());
 
 
             FirebaseDatabase.getInstance().getReference()
@@ -119,7 +116,6 @@ public class transactionadepter extends RecyclerView.Adapter {
             ViewHolder.amount.setText(model.getAmount());
             ViewHolder.description.setText(model.getDescription());
             ViewHolder.time.setText(formattedTime);
-            totalamount-=Integer.parseInt(model.getAmount());
         }
 
 

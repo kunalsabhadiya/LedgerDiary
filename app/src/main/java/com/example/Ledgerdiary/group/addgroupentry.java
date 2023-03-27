@@ -214,14 +214,15 @@ ArrayList<groupcustomermodel> list,selectedlist;
                                                     Toast.makeText(getApplicationContext(),"Group entry added sucessfully",Toast.LENGTH_SHORT);
                                                     geamount.setText("");
                                                     gedescription.setText("");
-                                                    startActivity(new Intent(getApplicationContext(),Dashboard.class));
+
                                                 });
                                     }
                                 });
                     }
 
 
-
+                    startActivity(new Intent(addgroupentry.this,splashaddgroupentry.class));
+                    finish();
 
                 }
             }

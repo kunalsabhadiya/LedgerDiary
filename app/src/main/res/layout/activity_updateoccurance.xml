@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/transactionbg"
+    tools:context=".reminder.updateoccurance">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/back"
+            android:id="@+id/upoccbackbtn"
+            />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/check"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/upoccsubmitbtn"
+            />
+        <TextView
+            android:id="@+id/upocctransactiontext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="70dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="15dp"
+            android:text="Update payment"
+            android:textAlignment="center"
+            android:textColor="@color/texttitle"
+            android:textSize="30sp" />
+
+        <ImageView
+            android:id="@+id/upoccrupee"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_below="@+id/upocctransactiontext"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:src="@drawable/rupee" />
+        <EditText
+            android:textSize="25sp"
+            android:id="@+id/upoccamount"
+            android:layout_width="match_parent"
+            android:inputType="number"
+            android:layout_height="50dp"
+            android:hint="Add Amount"
+            android:backgroundTint="@color/toolbarc"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="30dp"
+            android:textColor="@color/gradcolor1"
+            android:layout_below="@id/upocctransactiontext"
+            android:textColorHint="@color/hintcolor"
+            android:layout_toEndOf="@id/upoccrupee"/>
+        <ImageView
+            android:id="@+id/upoccdesc"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/description"
+            android:layout_below="@+id/upoccrupee"
+            />
+        <EditText
+            android:id="@+id/upoccdescription"
+            android:textSize="25sp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:hint="Add Description"
+            android:inputType="text"
+            android:backgroundTint="@color/toolbarc"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="30dp"
+            android:textColor="@color/black"
+            android:layout_below="@id/upoccamount"
+            android:textColorHint="@color/hintcolor"
+            android:layout_toEndOf="@id/upoccdesc"/>
+        <RelativeLayout
+            android:id="@+id/upoccurancedatelayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_below="@id/upoccdescription"
+            android:gravity="center"
+            >
+
+            <RelativeLayout
+                android:id="@+id/upoccrl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                >
+                <ImageView
+                    android:id="@+id/upocccalander"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/calendar" />
+                <TextView
+                    android:id="@+id/upoccdate"
+                    android:layout_marginStart="10dp"
+                    android:layout_centerVertical="true"
+                    android:textSize="18sp"
+                    android:layout_toEndOf="@id/upocccalander"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="23/08/2022"
+                    android:textColor="@color/hintcolor"/>
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/upoccrl"
+                android:layout_marginStart="30dp"
+                android:gravity="center"
+                >
+                <ImageView
+                    android:id="@+id/upocctimeimg"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/clock" />
+                <TextView
+                    android:id="@+id/upocctime"
+                    android:layout_marginStart="10dp"
+                    android:layout_centerVertical="true"
+                    android:textSize="18sp"
+                    android:layout_toEndOf="@id/upocctimeimg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10:00 AM"
+                    android:textColor="@color/hintcolor"/>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/upoccurancedatelayout"
+            android:gravity="center"
+            >
+            <ImageView
+                android:id="@+id/upoccbellimg"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:src="@drawable/bell" />
+            <Spinner
+                android:id="@+id/upoccuringtime"
+                android:layout_marginStart="10dp"
+                android:layout_centerVertical="true"
+                android:textSize="18sp"
+                android:background="@drawable/textbox"
+                android:layout_toEndOf="@+id/upoccbellimg"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:textColor="@color/hintcolor"/>
+
+        </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:layout_alignParentBottom="true"
+        >
+        <RelativeLayout
+            android:id="@+id/upoccdeletebtn"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:background="@color/gradcolor1">
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/delete"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/upoccpaidbtn"
+            android:layout_below="@id/upoccdeletebtn"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_margin="10dp"
+            android:background="@color/green"
+            >
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/paid"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
+
+</RelativeLayout>
+
