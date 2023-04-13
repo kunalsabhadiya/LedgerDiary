@@ -10,6 +10,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_SMS" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -24,6 +26,15 @@
         android:theme="@style/Theme.LedgerDiary"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".setting"
+            android:exported="false" />
+        <activity
+            android:name=".onlinecustomer.selectedtransactionview"
+            android:exported="false" />
+        <activity
+            android:name=".onlinecustomer.chatactivity"
+            android:exported="false" />
         <activity
             android:name=".onlinecustomer.splashupdate"
             android:exported="false" />
@@ -61,7 +72,8 @@
 
         <receiver
             android:name=".otpfetch"
-            android:exported="true">
+            android:exported="true"
+            android:permission="android.permission.BROADCAST_SMS">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
@@ -69,7 +81,8 @@
 
         <activity
             android:name=".group.addgroupentry"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".onlinecustomer.customerInterface"
             android:exported="false" />
@@ -86,6 +99,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name=".Services.FirebaseNotificationService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".profile"
             android:exported="false"

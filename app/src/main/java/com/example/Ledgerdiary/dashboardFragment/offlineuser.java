@@ -24,12 +24,14 @@ import java.util.ArrayList;
 public class offlineuser extends Fragment {
     RecyclerView rv;
     ArrayList<String> c_name, c_number;
+    offlineadepter customerAdapter;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         View view= inflater.inflate(R.layout.fragment_offlineuser, container, false);
      rv=view.findViewById(R.id.offline_user_recyclerview);
+
         sqliteDbhelper  db=new sqliteDbhelper(getContext());
      Cursor cursor = db.readAllData();
       c_name=new ArrayList<>();
@@ -41,9 +43,11 @@ public class offlineuser extends Fragment {
 
             }
         }
-       offlineadepter customerAdapter = new offlineadepter(getContext(),c_name, c_number);
+
         rv.setLayoutManager(new LinearLayoutManager(getContext()));
+        customerAdapter= new offlineadepter(getContext(),c_name, c_number);
         rv.setAdapter(customerAdapter);
+        customerAdapter.notifyDataSetChanged();
         return view;
     }
 }

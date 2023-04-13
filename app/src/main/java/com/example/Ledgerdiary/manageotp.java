@@ -31,9 +31,14 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.FirebaseMessagingService;
+
+import java.util.Objects;
 
 public class manageotp extends AppCompatActivity {
     private EditText ot1, ot2, ot3, ot4, ot5, ot6;
@@ -198,20 +203,35 @@ public class manageotp extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-
                             if (auth.getCurrentUser().getMetadata().getCreationTimestamp() == auth.getCurrentUser().getMetadata().getLastSignInTimestamp()) {
+                                FirebaseMessaging.getInstance().getToken()
+                                        .addOnCompleteListener(new OnCompleteListener<String>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<String> task) {
 
+                                                String token = task.getResult();
+                                                FirebaseDatabase.getInstance().getReference().child("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
+                                                        .child("token").setValue(token);
+                                            }
+                                        });
                                 Toast.makeText(manageotp.this, "Data inserted", Toast.LENGTH_SHORT).show();
                                 Intent intent=new Intent(manageotp.this, profile.class);
                                 startActivity(intent);
                                 finish();
                             } else {
+                                FirebaseMessaging.getInstance().getToken()
+                                        .addOnCompleteListener(new OnCompleteListener<String>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<String> task) {
+
+                                                String token = task.getResult();
+                                                FirebaseDatabase.getInstance().getReference().child("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
+                                                        .child("token").setValue(token);
+                                            }
+                                        });
                                 startActivity(new Intent(manageotp.this, Dashboard.class));
                                 finish();
                             }
-
-                        } else {
-                            Toast.makeText(manageotp.this, "sign in error", Toast.LENGTH_SHORT).show();
 
                         }
                     }

@@ -7,16 +7,30 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.Ledgerdiary.R;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,11 +48,13 @@ TextView ciname,citotal;
 CircleImageView backbtn,ciprofile;
 ImageView givemoney,chat,pdf,cicall;
 RelativeLayout expense;
+LinearLayout editprofile;
 RecyclerView rctransaction;
 ArrayList<transactionmodel> transactionlist;
+View overlayView;
+Animation blink;
 ProgressBar pg;
 int famount=0;
-
 transactionadepter transactionadepter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +68,8 @@ transactionadepter transactionadepter;
         backbtn=findViewById(R.id.backbtn);
         ciprofile=findViewById(R.id.ciprofile);
 
+        editprofile=findViewById(R.id.editprofile);
+
         givemoney=findViewById(R.id.givemoney);
         chat=findViewById(R.id.chat);
         pdf=findViewById(R.id.pdf);
@@ -59,6 +77,7 @@ transactionadepter transactionadepter;
         expense=findViewById(R.id.expense);
 
         rctransaction=findViewById(R.id.rctransaction);
+         blink= AnimationUtils.loadAnimation(getApplicationContext(),R.anim.buttonbehaviour);
 
         pg=findViewById(R.id.transactionpg);
 
@@ -67,6 +86,11 @@ transactionadepter transactionadepter;
         String imguri=getIntent().getStringExtra("oimageuri");
         String reciveruid=getIntent().getStringExtra("reciveruid");
         String senderroom = FirebaseAuth.getInstance().getUid()+reciveruid;
+        overlayView = LayoutInflater.from(this).inflate(R.layout.backgroundoverlay, null);
+        addContentView(overlayView, new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        overlayView.setVisibility(View.GONE);
 
         ciname.setText(name);
         Picasso.get().load(imguri).placeholder(R.drawable.profileimage).into(ciprofile);
@@ -85,7 +109,79 @@ transactionadepter transactionadepter;
         linearLayoutManager.setStackFromEnd(true);
         rctransaction.setLayoutManager(linearLayoutManager);
 
+       pdf.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               pdf.startAnimation(blink);
+               pdfGeneratorFragment fragment=new pdfGeneratorFragment();
+               Bundle args = new Bundle();
+               args.putString("chatname",name);
+               args.putString("chatnumber",number);
+               args.putString("receiveruid",reciveruid);
+               fragment.setArguments(args);
+               fragment.show(getSupportFragmentManager(), fragment.getTag());
+           }
+       });
+       editprofile.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               View popupView = getLayoutInflater().inflate(R.layout.popuo_changename, null);
+                  PopupWindow popupWindow = new PopupWindow(
+                       popupView,
+                       ViewGroup.LayoutParams.MATCH_PARENT,
+                       ViewGroup.LayoutParams.WRAP_CONTENT);
+                    popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+                    popupWindow.setElevation(3);
+                    popupWindow.setFocusable(true);
+                    popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+                    EditText editTextNewName = popupView.findViewById(R.id.ppnewname);
+                    Button buttonSave = popupView.findViewById(R.id.ppsave);
+                    Button buttonCancel = popupView.findViewById(R.id.ppcancle);
+                    CircleImageView imageView=popupView.findViewById(R.id.ppprofile);
+               overlayView.setVisibility(View.VISIBLE);
+               Picasso.get().load(imguri).placeholder(R.drawable.profileimage).into(imageView);
+                   editTextNewName.setText(name);
+                buttonSave.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+                       String newName = editTextNewName.getText().toString();
+                       FirebaseDatabase.getInstance().getReference().child("users").child(FirebaseAuth.getInstance().getUid())
+                                       .child("customer").child(number).child("Cname").setValue(newName);
+                       popupWindow.dismiss();
+                       overlayView.setVisibility(View.GONE);
+                       ciname.setText(newName);
+                       Snackbar snackbar=Snackbar.make(findViewById(android.R.id.content),"Username updated sucessfully",Snackbar.LENGTH_SHORT);
+                       snackbar.setBackgroundTint(ContextCompat.getColor(getApplicationContext(),R.color.lightgreen));
+                       snackbar.setTextColor(ContextCompat.getColor(getApplicationContext(),R.color.green));
+                       snackbar.show();
 
+                   }
+               });
+               buttonCancel.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View v) {
+                       popupWindow.dismiss();
+                       overlayView.setVisibility(View.GONE);
+                   }
+               });
+           }
+       });
+
+
+
+
+       chat.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               chat.startAnimation(blink);
+               Intent intent=new Intent(customerInterface.this,chatactivity.class);
+               intent.putExtra("chatimage",imguri);
+               intent.putExtra("chatname",name);
+               intent.putExtra("chatnumber",number);
+               intent.putExtra("receiveruid",reciveruid);
+               startActivity(intent);
+           }
+       });
 
         pg.setVisibility(View.VISIBLE);
 
@@ -140,14 +236,18 @@ transactionadepter transactionadepter;
         cicall.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cicall.startAnimation(blink);
                 Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + number));
                 startActivity(intent);
             }
         });
 
         backbtn.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+
+                backbtn.startAnimation(blink);
                 finish();
             }
         });
@@ -155,6 +255,7 @@ transactionadepter transactionadepter;
         expense.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                expense.startAnimation(blink);
                 Intent intent=new Intent(customerInterface.this, addTransaction.class);
                 intent.putExtra("ciname",name);
                 intent.putExtra("ciprofile",imguri);

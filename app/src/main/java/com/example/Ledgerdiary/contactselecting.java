@@ -81,9 +81,9 @@ public class contactselecting extends AppCompatActivity {
                                   .addListenerForSingleValueEvent(new ValueEventListener() {
                                       @Override
                                       public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                          System.out.println(snapshot.child("phonenumber").getValue());
                                           if(snapshot.exists()) {
                                               for (DataSnapshot snapshot1 : snapshot.getChildren()) {
+                                                  int am=0;
                                                   if (!Objects.equals(snapshot1.getKey(), FirebaseAuth.getInstance().getUid())) {
                                                       FirebaseDatabase.getInstance().getReference().child("users")
                                                               .child(FirebaseAuth.getInstance().getUid()).child("customer")
@@ -98,7 +98,7 @@ public class contactselecting extends AppCompatActivity {
                                                       FirebaseDatabase.getInstance().getReference().child("users")
                                                               .child(FirebaseAuth.getInstance().getUid()).child("customer")
                                                               .child(finalnumber)
-                                                              .child("Ctamount").setValue(0);
+                                                              .child("Ctamount").setValue(am);
                                                       for (DataSnapshot childSnapshot : snapshot.getChildren()) {
                                                           String otherUserId = childSnapshot.getKey();
                                                           String otherimageuri = childSnapshot.child("imageUri").getValue().toString();

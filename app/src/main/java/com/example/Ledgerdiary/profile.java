@@ -1,11 +1,14 @@
 package com.example.Ledgerdiary;
 
+import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -21,6 +24,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
@@ -47,9 +51,9 @@ private FirebaseDatabase database;
 private FirebaseStorage storage;
 
 private String username,buisness,img;
-ActivityResultLauncher<String> launcher;
 private Button psave;
 private FirebaseAuth auth;
+private Uri uri;
 ProgressBar pg;
 
 
@@ -117,56 +121,51 @@ ProgressBar pg;
 
 
 
-
-
-
-
-            launcher = registerForActivityResult(new ActivityResultContracts.GetContent(), new ActivityResultCallback<Uri>() {
-                @Override
-                public void onActivityResult(Uri result) {
-                    pimage.setImageURI(result);
-                    final StorageReference reference=storage.getReference().child("UserProfile");
-                    reference.child(auth.getUid()).putFile(result).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            reference.child(auth.getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                                @Override
-                                public void onSuccess(Uri uri) {
-                                    database.getReference().child("users").child(auth.getUid()).child("imageUri").setValue(uri.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void unused) {
-                                            Toast.makeText(profile.this, "Profile update Succesfully.", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Toast.makeText(profile.this, "Failed", Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
-
-                }
-            });
-
             addimage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    launcher.launch("image/*");
+                    ImagePicker.with(profile.this)
+                            .galleryOnly()
+                            .crop()
+                            .cropSquare()
+                            .compress(150)
+                            .start();
                 }
             });
-
             psave.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     username=pusername.getText().toString();
                     buisness=pbuisness.getText().toString();
+
                     if(TextUtils.isEmpty(username)){
                             pusername.setError("Username is Required");
                             pusername.requestFocus();
                     }else{
+                        final StorageReference reference=storage.getReference().child("UserProfile");
+                        if(uri != null) {
+                            reference.child(auth.getUid()).putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    reference.child(auth.getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            database.getReference().child("users").child(auth.getUid()).child("imageUri").setValue(uri.toString()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                @Override
+                                                public void onSuccess(Void unused) {
+                                                    Toast.makeText(profile.this, "Profile update Succesfully.", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Toast.makeText(profile.this, "Failed", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
                         database.getReference().child("users").child(auth.getUid()).child("username").setValue(username);
                         database.getReference().child("users").child(auth.getUid()).child("buisness").setValue(buisness);
                         Toast.makeText(profile.this, "Profile Update Successfully", Toast.LENGTH_SHORT).show();
@@ -185,6 +184,26 @@ ProgressBar pg;
             }
 
         }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode== Activity.RESULT_OK){
+        uri=data.getData();
+        pimage.setImageURI(uri);
+        }
+        else{
+            if(!img.isEmpty()){
+            Picasso.get()
+                    .load(img)
+                    .placeholder(R.drawable.profileimage)
+                    .into(pimage);
+            }else{
+                pimage.setImageResource(R.drawable.profileimage);
+            }
+        }
+
     }
+}
 
 

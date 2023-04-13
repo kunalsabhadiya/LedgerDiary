@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="85dp"
+    android:layout_height="90dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginLeft="30dp"
     android:layout_marginRight="30dp"
@@ -16,7 +16,7 @@
         >
 
         <RelativeLayout
-            android:id="@+id/remdate"
+            android:id="@+id/occrowdate"
             android:layout_width="51dp"
             android:layout_height="51dp"
             android:background="@drawable/datebg"
@@ -31,7 +31,7 @@
                 android:background="@drawable/datebg"
                 android:orientation="vertical">
                 <TextView
-                    android:id="@+id/remmonth"
+                    android:id="@+id/occrowmonth"
                     android:text="March"
                     android:textAlignment="center"
                     android:textSize="12sp"
@@ -40,7 +40,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="20dp"/>
                 <TextView
-                    android:id="@+id/remday"
+                    android:id="@+id/occrowday"
                     android:background="#F4F1F1"
                     android:layout_width="match_parent"
                     android:layout_height="30dp"
@@ -56,11 +56,11 @@
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/remdate"
+            android:layout_toRightOf="@+id/occrowdate"
             android:layout_centerVertical="true">
 
             <TextView
-                android:id="@+id/remdescription"
+                android:id="@+id/occrowdescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="1dp"
@@ -72,27 +72,35 @@
                 android:textSize="24sp" />
 
             <TextView
-                android:id="@+id/remdue"
+                android:id="@+id/occrowcurrenttime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/remdescription"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="1dp"
-                android:layout_marginEnd="1dp"
-                android:layout_marginBottom="1dp"
-                android:text="Due in 3 days"
-                android:textColor="@color/gradcolor1" />
+                android:layout_below="@+id/occrowdescription"
+                android:layout_margin="2dp"
+                android:text="12:48 AM"
+                android:textColor="@color/hintcolor" />
+
+            <TextView
+                android:id="@+id/occrowdue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/occrowcurrenttime"
+                android:layout_margin="2dp"
+                android:fontFamily="@font/spartan_bold"
+                android:text="Due in 5 days"
+                android:textColor="@color/green" />
+
 
         </RelativeLayout>
         <RelativeLayout
-            android:layout_width="120dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:background="@drawable/amountbg"
             >
 
             <TextView
-                android:id="@+id/remamount"
+                android:id="@+id/occrowtamount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -102,8 +110,9 @@
                 android:layout_marginBottom="8dp"
                 android:text="250"
                 android:textColor="@color/gradcolor1"
-                android:textSize="30sp"
+                android:textSize="28sp"
                 android:textStyle="bold" />
+
 
         </RelativeLayout>
 

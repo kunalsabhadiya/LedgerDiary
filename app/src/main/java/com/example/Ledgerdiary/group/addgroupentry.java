@@ -2,6 +2,7 @@ package com.example.Ledgerdiary.group;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -53,6 +54,7 @@ String text;
 groupcustomeradepter adepter;
 selectedcustomeradepter selectedadepter;
 ArrayList<groupcustomermodel> list,selectedlist;
+SearchView groupsearchView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +72,25 @@ ArrayList<groupcustomermodel> list,selectedlist;
         gedescription=findViewById(R.id.gedescription);
 
         gedate=findViewById(R.id.gedate);
+        groupsearchView=findViewById(R.id.grouponlinesearch);
+        EditText searchEditText = groupsearchView.findViewById(androidx.appcompat.R.id.search_src_text);
+        searchEditText.setTextColor(getResources().getColor(R.color.black));
+        groupsearchView.clearFocus();
+
+        groupsearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                adepter.filter(newText);
+                return false;
+            }
+
+        });
+
 
 
 
@@ -172,6 +193,8 @@ ArrayList<groupcustomermodel> list,selectedlist;
         gecalender.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Date date=Calendar.getInstance().getTime();
+                datePickerDialog.getDatePicker().setMaxDate(date.getTime());
                 datePickerDialog.show();
             }
         });
@@ -211,7 +234,6 @@ ArrayList<groupcustomermodel> list,selectedlist;
                                         FirebaseDatabase.getInstance().getReference().child("transactions")
                                                 .child(selectedlist.get(finalI).getCuid()+senderid).push().setValue(transactionmodel)
                                                 .addOnCompleteListener(task1 -> {
-                                                    Toast.makeText(getApplicationContext(),"Group entry added sucessfully",Toast.LENGTH_SHORT);
                                                     geamount.setText("");
                                                     gedescription.setText("");
 

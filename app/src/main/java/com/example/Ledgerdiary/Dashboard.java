@@ -152,6 +152,34 @@ public class Dashboard extends AppCompatActivity {
 
 
 
+        if(!FirebaseAuth.getInstance().getCurrentUser().getUid().isEmpty()){
+             FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getUid()).child("customer").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot snapshot1:snapshot.getChildren()) {
+                        String uid = Objects.requireNonNull(snapshot1.child("Cuid").getValue()).toString();
+                        FirebaseDatabase.getInstance().getReference().child("users").child(uid).child("imageUri")
+                                .addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot2) {
+                                        String image=snapshot2.getValue(String.class);
+                                        FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getUid()).child("customer").child(snapshot1.child("Cphonenumber").getValue(String.class)).child("Cimageuri").setValue(image);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
 
         addgroup.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,7 +230,7 @@ public class Dashboard extends AppCompatActivity {
       setting.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
-              startActivity(new Intent(Dashboard.this,profile.class));
+              startActivity(new Intent(Dashboard.this,setting.class));
           }
       });
 
@@ -307,5 +335,78 @@ public class Dashboard extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         finish();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        addgroup.hide();
+        addgroup.startAnimation(slideright);
+        addperson.hide();
+        addperson.startAnimation(slideright);
+        reminderbtn.hide();
+        reminderbtn.startAnimation(slideleft);
+        setting.hide();
+        setting.startAnimation(slideleft);
+        isclicked=true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        addentry.startAnimation(rotateclose);
+        addgroup.hide();
+        addgroup.startAnimation(slideright);
+        addperson.hide();
+        addperson.startAnimation(slideright);
+        reminderbtn.hide();
+        reminderbtn.startAnimation(slideleft);
+        setting.hide();
+        setting.startAnimation(slideleft);
+        isclicked=true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        addentry.startAnimation(rotateclose);
+        addgroup.hide();
+        addgroup.startAnimation(slideright);
+        addperson.hide();
+        addperson.startAnimation(slideright);
+        reminderbtn.hide();
+        reminderbtn.startAnimation(slideleft);
+        setting.hide();
+        setting.startAnimation(slideleft);
+        isclicked=true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        addgroup.hide();
+        addgroup.startAnimation(slideright);
+        addperson.hide();
+        addperson.startAnimation(slideright);
+        reminderbtn.hide();
+        reminderbtn.startAnimation(slideleft);
+        setting.hide();
+        setting.startAnimation(slideleft);
+        isclicked=true;
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        addentry.startAnimation(rotateclose);
+        addgroup.hide();
+        addgroup.startAnimation(slideright);
+        addperson.hide();
+        addperson.startAnimation(slideright);
+        reminderbtn.hide();
+        reminderbtn.startAnimation(slideleft);
+        setting.hide();
+        setting.startAnimation(slideleft);
+        isclicked=true;
     }
 }

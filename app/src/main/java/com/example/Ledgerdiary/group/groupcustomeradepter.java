@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.Ledgerdiary.R;
+import com.example.Ledgerdiary.dashboardFragment.onlinemodel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -20,11 +21,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class groupcustomeradepter extends RecyclerView.Adapter<groupcustomeradepter.ViewHolder> {
     Context context;
     ongroupItemClickListner ongroupItemClicklistner;
-    ArrayList<groupcustomermodel> list;
+    ArrayList<groupcustomermodel> list,filterdList;
 
     public groupcustomeradepter(Context context, ArrayList<groupcustomermodel> list,ongroupItemClickListner ongroupItemClicklistner) {
         this.context = context;
         this.list = list;
+        this.filterdList = list;
         this.ongroupItemClicklistner = ongroupItemClicklistner;
     }
 
@@ -37,7 +39,7 @@ public class groupcustomeradepter extends RecyclerView.Adapter<groupcustomeradep
 
     @Override
     public void onBindViewHolder(@NonNull groupcustomeradepter.ViewHolder holder, int position) {
-      groupcustomermodel model= list.get(position);
+      groupcustomermodel model= filterdList.get(position);
       holder.customername.setText(model.getCname());
       holder.customernumber.setText(model.getCphonenumber());
         Picasso.get().load(model.getCimageuri()).placeholder(R.drawable.profileimage).into(holder.customerimage);
@@ -48,10 +50,23 @@ public class groupcustomeradepter extends RecyclerView.Adapter<groupcustomeradep
             }
         });
     }
+    public void filter(String query) {
+        filterdList = new ArrayList<>();
+        if (query.isEmpty()) {
+            filterdList = list;
+        } else {
+            for (groupcustomermodel item : list) {
+                if (item.getCname().toLowerCase().contains(query.toLowerCase())) {
+                    filterdList.add(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return filterdList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

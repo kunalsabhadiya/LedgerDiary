@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="8dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:padding="4dp"
+        android:gravity="center"
+        android:background="#dddd"
+        android:orientation="horizontal">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/entryimage"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="#dddd"
+            android:padding="4dp"
+            app:shapeAppearanceOverlay="@style/rounded"
+            />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_margin="5dp"
+            android:padding="5dp">
+            <TextView
+                android:id="@+id/entryname"
+                android:fontFamily="@font/spartan_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/Transperant"
+                android:text="Person Name"
+                android:background="#dddd"
+                android:textStyle="bold"
+                android:textSize="16sp"/>
+            <TextView
+                android:id="@+id/entryphone"
+                android:textColor="@color/Transperant"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="3dp"
+                android:background="#dddd"
+                android:layout_height="wrap_content"
+                android:text="Number"
+                android:textSize="13sp"/>
+        </LinearLayout>
+        <androidx.cardview.widget.CardView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="60dp"
+            android:backgroundTint="#F2F4F7"
+            android:layout_gravity="center"
+            app:cardCornerRadius="8dp"
+            >
+            <TextView
+                android:id="@+id/entryamount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="26sp"
+                android:gravity="center"
+                android:background="#dddd"
+                android:layout_gravity="center"
+                android:padding="10dp"
+                />
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+
+
+</androidx.cardview.widget.CardView>

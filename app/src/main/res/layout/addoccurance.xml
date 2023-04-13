@@ -28,13 +28,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="40dp"
             android:layout_marginEnd="40dp"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="15dp"
             android:text="Add reccuring payment"
             android:textAlignment="center"
+            android:fontFamily="@font/spartan_regular"
             android:textColor="@color/texttitle"
-            android:textSize="28sp" />
+            android:textSize="24sp" />
 
         <ImageView
             android:id="@+id/occrupee"
@@ -93,7 +94,6 @@
             android:layout_below="@id/occdescription"
             android:gravity="center"
             >
-
         <RelativeLayout
             android:id="@+id/occrl"
             android:layout_width="wrap_content"
@@ -143,12 +143,14 @@
         </RelativeLayout>
 
         </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/linearly"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_vertical"
             android:layout_below="@+id/occurancedatelayout"
-            android:gravity="center"
             >
             <ImageView
                 android:id="@+id/bellimg"
@@ -158,15 +160,56 @@
             <Spinner
                 android:id="@+id/occuringtime"
                 android:layout_marginStart="10dp"
-                android:layout_centerVertical="true"
                 android:textSize="18sp"
-                android:background="@drawable/textbox"
-                android:layout_toEndOf="@+id/bellimg"
-                android:layout_width="200dp"
-                android:layout_height="40dp"
-                android:textColor="@color/hintcolor"/>
+                android:background="@color/hintcolor"
+                android:layout_gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
 
-        </RelativeLayout>
+        </LinearLayout>
+    <LinearLayout
+        android:id="@+id/linearlytv"
+      android:layout_below="@+id/linearly"
+        android:layout_marginTop="30dp"
+        android:layout_width="match_parent"
+        android:background="@drawable/searchview"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/occperiodshow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/toolbarend"
+            android:fontFamily="@font/spartan_bold"
+            android:layout_margin="2dp"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            />
+        <TextView
+            android:id="@+id/occdateshow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/hintcolor"
+            android:layout_margin="2dp"
+            android:fontFamily="@font/spartan_bold"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            />
+        <TextView
+            android:id="@+id/occduedate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/green"
+            android:layout_margin="2dp"
+            android:fontFamily="@font/spartan_bold"
+            android:textSize="20sp"
+            android:visibility="gone"
+            android:textAlignment="center"
+            />
+
+    </LinearLayout>
+
 
 
 </RelativeLayout>

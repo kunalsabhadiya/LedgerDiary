@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -26,15 +27,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class onlinercadepter extends RecyclerView.Adapter<onlinercadepter.ViewHolder> {
     Context context;
-    ArrayList<onlinemodel> list;
+    ArrayList<onlinemodel> list,filteredList;
+    String img;
 
 
-    public void setFilterdlist(ArrayList<onlinemodel> filterdlist) {
-        this.list=filterdlist;
-    }
+
     public onlinercadepter(Context context, ArrayList<onlinemodel> list) {
         this.context = context;
         this.list = list;
+        this.filteredList = list;
     }
 
     @NonNull
@@ -46,10 +47,12 @@ public class onlinercadepter extends RecyclerView.Adapter<onlinercadepter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        onlinemodel model=list.get(position);
+        onlinemodel model=filteredList.get(position);
         holder.username.setText(model.getCname());
         holder.number.setText(model.getCphonenumber());
         Picasso.get().load(model.getCimageuri()).placeholder(R.drawable.profileimage).into(holder.image);
+
+
         int amount=model.getCtamount();
         if(amount<0){
             holder.entryamount.setText(String.valueOf(Math.abs(amount)));
@@ -77,9 +80,22 @@ public class onlinercadepter extends RecyclerView.Adapter<onlinercadepter.ViewHo
 
 
     }
+    public void filter(String query) {
+        filteredList = new ArrayList<>();
+        if (query.isEmpty()) {
+            filteredList = list;
+        } else {
+            for (onlinemodel item : list) {
+                if (item.getCname().toLowerCase().contains(query.toLowerCase())) {
+                    filteredList.add(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
     @Override
     public int getItemCount() {
-        return list.size();
+        return filteredList.size();
     }
 
 

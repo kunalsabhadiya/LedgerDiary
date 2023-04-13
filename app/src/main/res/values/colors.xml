@@ -21,4 +21,8 @@
     <color name="hintcolor">#757070</color>
     <color name="green">#0ECC15</color>
 
+    <color name="lightgreen">#C6F3D0</color>
+
+    <color name="splashcolor">#F2F4F7</color>
+
 </resources>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/profileimage"
+        android:layout_margin="5dp"
+        android:id="@+id/receiverprofile"
+        app:civ_border_width="2dp"
+        app:civ_border_color="@color/toolbarc"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/recivermessage"
+        android:textColor="@color/black"
+        android:layout_toRightOf="@+id/receiverprofile"
+        android:layout_centerVertical="true"
+        android:text="Ledger diary"
+        android:background="@drawable/receiverbg"
+        android:textSize="18sp"
+        android:fontFamily="@font/spartan_bold"
+        android:padding="5dp"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/receiverprofile"
+        android:textColor="@color/hintcolor"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="5dp"
+        android:text="02:23 pm"
+        android:textSize="8sp"
+        android:id="@+id/receivertime"
+        />
+
+
+</RelativeLayout>

@@ -10,6 +10,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -19,16 +21,29 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.Ledgerdiary.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
@@ -36,8 +51,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -48,9 +65,8 @@ TextView addciname,adddatetv;
 Button addsave;
 ImageView calander,addcallbtn;
     String text;
-String senderroom,reciverroom,usernumber,username;
+String senderroom,reciverroom,usernumber,username,noti,senderuid,reciveruid,imguri,number,name,rtoken,sname,simage;
 RelativeLayout addrlayout;
-String addtamount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,12 +89,21 @@ String addtamount;
 
         addrlayout = findViewById(R.id.addrlayout);
 
-        String name = getIntent().getStringExtra("ciname");
-        String number = getIntent().getStringExtra("mnumber");
-        String imguri = getIntent().getStringExtra("ciprofile");
-        String reciveruid = getIntent().getStringExtra("ruid");
-        String senderuid = FirebaseAuth.getInstance().getUid();
+        if(getIntent().hasExtra("noti")){
+             name = getIntent().getStringExtra("ciname");
+             number = getIntent().getStringExtra("mnumber");
+             imguri = getIntent().getStringExtra("ciprofile");
+             reciveruid = getIntent().getStringExtra("ruid");
+             noti = getIntent().getStringExtra("noti");
 
+        }else{
+             name = getIntent().getStringExtra("ciname");
+             number = getIntent().getStringExtra("mnumber");
+             imguri = getIntent().getStringExtra("ciprofile");
+             reciveruid = getIntent().getStringExtra("ruid");
+        }
+
+        senderuid = FirebaseAuth.getInstance().getUid();
         senderroom = senderuid + reciveruid;
         reciverroom = reciveruid + senderuid;
 
@@ -161,6 +186,8 @@ String addtamount;
         calander.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                 Date date=Calendar.getInstance().getTime();
+                datePickerDialog.getDatePicker().setMaxDate(date.getTime());
                 datePickerDialog.show();
             }
         });
@@ -238,6 +265,7 @@ String addtamount;
                                                                 }
                                                             });
                                                     startActivity(new Intent(addTransaction.this,splashadd.class));
+                                                    gettoken(addamount.getText().toString(),reciverroom,name,number,imguri);
                                                     finish();
                                                 }
                                             });
@@ -271,7 +299,81 @@ String addtamount;
             snackbar.show();
         }
 
+
+
     }
+    private void gettoken(String amount, String roomid, String rname, String rnumber, String rimageuri) {
+        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
+
+        usersRef.child(reciveruid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                rtoken = Objects.requireNonNull(snapshot.child("token").getValue()).toString();
+                sendNotification(amount, roomid, rname, rnumber, rimageuri);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("gettoken", "Database Error: " + error.getMessage());
+            }
+        });
+
+        usersRef.child(senderuid).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                sname = Objects.requireNonNull(snapshot.child("username").getValue()).toString();
+                simage = Objects.requireNonNull(snapshot.child("imageUri").getValue()).toString();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d("gettoken", "Database Error: " + error.getMessage());
+            }
+        });
+    }
+
+    private void sendNotification(String amount, String roomid, String rname, String rnumber, String rimageuri) {
+        JSONObject to = new JSONObject();
+        JSONObject data = new JSONObject();
+        try {
+            data.put("title", sname);
+            data.put("message", "Transaction added: " + amount);
+            data.put("image", simage);
+            data.put("rimage", rimageuri);
+            data.put("id", reciveruid);
+            data.put("chatid", roomid);
+            data.put("number", rnumber);
+            data.put("name", rname);
+            to.put("token", rtoken);
+            to.put("data", data);
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", to, response -> {
+            Log.d("notification", "Notification sent: " + response);
+        }, error -> {
+            Log.d("notification", "Notification send failed: " + error);
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "key=AAAApKKw8xo:APA91bFZPz8GdPRTs8rk5MMePoyV-9C0tOGSVa8hJqLepytnAmPYALiQrCr7sfsC7RElLylV_De4_ugTLGtdX6vnt-hKivFxGKOltCyarrftmE9Hwl04fFH86r9FG_q--UcGTCIzgrSx");
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+        };
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        request.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(request);
+    }
+
 
 
 }

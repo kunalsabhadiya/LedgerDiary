@@ -5,6 +5,9 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 tools:context=".reminder.updatesingletimeentry">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 <RelativeLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -35,10 +38,13 @@ tools:context=".reminder.updatesingletimeentry">
         android:layout_marginTop="10dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="15dp"
+        android:layout_toStartOf="@+id/upsinglesubmitbtn"
+        android:layout_toEndOf="@+id/upsinglebackbtn"
+        android:fontFamily="@font/spartan_regular"
         android:text="Update my reminder"
         android:textAlignment="center"
         android:textColor="@color/texttitle"
-        android:textSize="32sp" />
+        android:textSize="26sp" />
 
     <ImageView
         android:id="@+id/upsinglerupee"
@@ -114,6 +120,7 @@ tools:context=".reminder.updatesingletimeentry">
 
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/rltime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/upsinglerl"
@@ -137,6 +144,21 @@ tools:context=".reminder.updatesingletimeentry">
             android:textColor="@color/hintcolor"/>
 
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/updatedue"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rltime"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:layout_marginBottom="2dp"
+        android:fontFamily="@font/spartan_bold"
+        android:text="Due in 5 days"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
 
 </RelativeLayout>
 <RelativeLayout
@@ -163,24 +185,39 @@ tools:context=".reminder.updatesingletimeentry">
             android:layout_centerVertical="true"
             android:src="@drawable/delete" />
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/upsinglepaidbtn"
-        android:layout_below="@id/upsingledeletebtn"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_margin="10dp"
-        android:background="@color/green"
-        >
+        android:layout_below="@id/upsingledeletebtn"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/green">
+
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:src="@drawable/paid"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            />
+            android:src="@drawable/paid" />
     </RelativeLayout>
 
 
-
 </RelativeLayout>
+</RelativeLayout>
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:lottie_rawRes="@raw/success"
+        app:lottie_autoPlay="false"
+        android:layout_centerVertical="true"
+        android:id="@+id/animpaid"
+        app:lottie_loop="false"
+        android:visibility="gone"
+        />
+
+
 </RelativeLayout>

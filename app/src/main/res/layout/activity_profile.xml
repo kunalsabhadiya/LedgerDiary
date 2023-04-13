@@ -63,12 +63,7 @@
         android:textColorHint="#7C7B7B"
 
         />
-      <View
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
 
-          android:backgroundTint="#4259D8"
-          android:background="?android:attr/listDivider" />
       <TextView
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -86,12 +81,6 @@
           android:id="@+id/pnumber"
           android:padding="5dp"
           />
-
-      <View
-          android:backgroundTint="#4259D8"
-          android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="?android:attr/listDivider" />
 
       <TextView
           android:layout_width="match_parent"
