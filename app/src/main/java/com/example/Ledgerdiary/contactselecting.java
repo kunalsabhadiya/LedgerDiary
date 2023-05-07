@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.room.Room;
 
 import android.app.Activity;
 import android.content.Context;
@@ -20,9 +21,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.Ledgerdiary.dashboardFragment.offlineuser;
+import com.example.Ledgerdiary.offlinecustomer.UserDao;
+import com.example.Ledgerdiary.offlinecustomer.citable;
+import com.example.Ledgerdiary.offlinecustomer.offlineDb;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +42,7 @@ public class contactselecting extends AppCompatActivity {
     EditText addnum, addname;
     Button addcontect,addsavebtn;
     String finalnumber;
+    ProgressBar pg;
 
     static final int PICK_CONTACT = 1;
 
@@ -48,6 +54,8 @@ public class contactselecting extends AppCompatActivity {
         addnum = findViewById(R.id.addcontactnum);
         addsavebtn = findViewById(R.id.addsavebtn);
         addname = findViewById(R.id.addcontactname);
+        pg =findViewById(R.id.pg);
+        pg.setVisibility(View.INVISIBLE);
         addcontect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -59,6 +67,7 @@ public class contactselecting extends AppCompatActivity {
         addsavebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                pg.setVisibility(View.VISIBLE);
                if(addname.getText().toString().isEmpty()){
                     addname.setError("Name is required");
                     addname.requestFocus();
@@ -115,18 +124,27 @@ public class contactselecting extends AppCompatActivity {
                                                       Toast.makeText(contactselecting.this, "Contact added successfully", Toast.LENGTH_SHORT).show();
                                                       addnum.setText("");
                                                       addname.setText("");
+                                                      pg.setVisibility(View.INVISIBLE);
                                                       startActivity(new Intent(contactselecting.this, Dashboard.class));
                                                   }
                                               }
                                           }
                                                  else{
-                                              sqliteDbhelper myDB = new sqliteDbhelper(contactselecting.this);
-                                              myDB.addCustomer(addname.getText().toString().trim(),
-                                                      finalnumber);
-                                              addnum.setText("");
-                                              addname.setText("");
-                                              startActivity(new Intent(contactselecting.this,Dashboard.class));
-                                          }
+                                              offlineDb db= Room.databaseBuilder(getApplicationContext(),offlineDb.class,"offlineusers").allowMainThreadQueries().build();
+                                              UserDao dao=db.userDao();
+                                              boolean check=dao.userexist(finalnumber);
+                                              if(!check){
+                                                  dao.insertuser(new citable(addname.getText().toString(),finalnumber,0));
+                                                  addnum.setText("");
+                                                  addname.setText("");
+                                                  startActivity(new Intent(contactselecting.this,Dashboard.class));
+                                                  pg.setVisibility(View.INVISIBLE);
+                                              }else{
+                                                   Toast.makeText(contactselecting.this, "User already exist", Toast.LENGTH_SHORT).show();
+                                                   addnum.requestFocus();
+                                                   pg.setVisibility(View.INVISIBLE);
+                                              }
+                                             }
                                       }
 
                                       @Override

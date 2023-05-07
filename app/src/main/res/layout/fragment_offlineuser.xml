@@ -3,17 +3,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".dashboardFragment.offlineuser">
+   <RelativeLayout
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+      <androidx.appcompat.widget.SearchView
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:queryHint="Search by name..."
+          android:inputType="text"
+          android:background="@drawable/searchview"
+          android:id="@+id/onlinesearch"
+          app:iconifiedByDefault="false"
+          app:searchIcon="@drawable/baseline_search_24"
+          android:layout_marginTop="5dp"
+          android:layout_marginStart="17dp"
+          android:layout_marginEnd="17dp"
+          />
 
+      <androidx.recyclerview.widget.RecyclerView
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:layout_below="@+id/onlinesearch"
+          android:layout_margin="5dp"
+          android:padding="5dp"
+          tools:listitem="@layout/finalentry"
+          android:id="@+id/offline_user_recyclerview"
+          />
 
-   <androidx.recyclerview.widget.RecyclerView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="5dp"
-    android:padding="5dp"
-    tools:listitem="@layout/finalentry"
-    android:id="@+id/offline_user_recyclerview"
-    />
+   </RelativeLayout>
 
 
 </FrameLayout>

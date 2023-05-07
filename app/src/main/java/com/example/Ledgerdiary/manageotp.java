@@ -70,7 +70,7 @@ public class manageotp extends AppCompatActivity {
 
         otpid = getIntent().getStringExtra("verificationId");
         phonenumber = getIntent().getStringExtra("number");
-        new otpfetch().setEditText(tvotp);
+        new otpfetch(tvotp);
         otp=tvotp.getText().toString();
         auth = FirebaseAuth.getInstance();
         verifybtn.setOnClickListener(new View.OnClickListener() {
@@ -204,31 +204,11 @@ public class manageotp extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             if (auth.getCurrentUser().getMetadata().getCreationTimestamp() == auth.getCurrentUser().getMetadata().getLastSignInTimestamp()) {
-                                FirebaseMessaging.getInstance().getToken()
-                                        .addOnCompleteListener(new OnCompleteListener<String>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<String> task) {
-
-                                                String token = task.getResult();
-                                                FirebaseDatabase.getInstance().getReference().child("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
-                                                        .child("token").setValue(token);
-                                            }
-                                        });
                                 Toast.makeText(manageotp.this, "Data inserted", Toast.LENGTH_SHORT).show();
                                 Intent intent=new Intent(manageotp.this, profile.class);
                                 startActivity(intent);
                                 finish();
                             } else {
-                                FirebaseMessaging.getInstance().getToken()
-                                        .addOnCompleteListener(new OnCompleteListener<String>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<String> task) {
-
-                                                String token = task.getResult();
-                                                FirebaseDatabase.getInstance().getReference().child("users").child(Objects.requireNonNull(FirebaseAuth.getInstance().getUid()))
-                                                        .child("token").setValue(token);
-                                            }
-                                        });
                                 startActivity(new Intent(manageotp.this, Dashboard.class));
                                 finish();
                             }

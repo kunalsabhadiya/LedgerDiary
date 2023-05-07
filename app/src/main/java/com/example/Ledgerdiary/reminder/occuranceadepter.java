@@ -6,6 +6,8 @@ import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -116,6 +118,7 @@ public class occuranceadepter extends RecyclerView.Adapter<occuranceadepter.View
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                holder.rl.startAnimation(AnimationUtils.loadAnimation(context,R.anim.buttonbehaviour));
                 Intent intent=new Intent(context,updateoccurance.class);
                 intent.putExtra("occamount",model.getAmount());
                 intent.putExtra("occdescription",model.getDescription());
@@ -136,10 +139,12 @@ public class occuranceadepter extends RecyclerView.Adapter<occuranceadepter.View
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         TextView occrowmonth,occrowday,occrowdescription,occrowcurrenttime,occrowdue,occrowtamount;
+        RelativeLayout rl;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             occrowmonth=itemView.findViewById(R.id.occrowmonth);
             occrowday=itemView.findViewById(R.id.occrowday);
+            rl=itemView.findViewById(R.id.rloccurance);
             occrowdescription=itemView.findViewById(R.id.occrowdescription);
             occrowcurrenttime=itemView.findViewById(R.id.occrowcurrenttime);
             occrowdue=itemView.findViewById(R.id.occrowdue);

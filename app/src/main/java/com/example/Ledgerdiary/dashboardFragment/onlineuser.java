@@ -4,7 +4,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,12 +11,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.Ledgerdiary.R;
+import com.example.Ledgerdiary.fixentriesfragment;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -35,10 +37,12 @@ public class onlineuser extends Fragment {
 RecyclerView onlinerc;
 DatabaseReference reference;
 onlinercadepter adepter;
+ImageView mixpdf;
 ArrayList<onlinemodel> list;
 SearchView onlinesearch;
 ShimmerFrameLayout shimmerFramelayout;
 LinearLayout linearLayout;
+Animation blink;
 int total=0,give=0,got=0;
 
     @Override
@@ -48,8 +52,12 @@ int total=0,give=0,got=0;
       View view = inflater.inflate(R.layout.fragment_onlineuser, container, false);
        onlinerc=view.findViewById(R.id.online_user_recyclerview);
        onlinesearch=view.findViewById(R.id.onlinesearch);
+       mixpdf=view.findViewById(R.id.mixpdf);
        shimmerFramelayout=view.findViewById(R.id.shimmer_view);
        linearLayout=view.findViewById(R.id.shimmerlinear);
+        blink= AnimationUtils.loadAnimation(getContext(),R.anim.buttonbehaviour);
+
+       //for set inner color of searchview text...
         EditText searchEditText = onlinesearch.findViewById(androidx.appcompat.R.id.search_src_text);
         searchEditText.setTextColor(getResources().getColor(R.color.black));
        onlinesearch.clearFocus();
@@ -74,6 +82,15 @@ int total=0,give=0,got=0;
         reference= FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getUid()).child("customer");
         shimmerFramelayout.startShimmer();
         adepter=new onlinercadepter(getContext(),list);
+
+        mixpdf.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mixpdf.startAnimation(blink);
+                fixentriesfragment fragment=new fixentriesfragment();
+                fragment.show(getChildFragmentManager(), "bottomSheet");
+            }
+        });
 
        reference.addValueEventListener(new ValueEventListener() {
            @Override

@@ -10,6 +10,13 @@ import android.widget.TextView;
 
 public class otpfetch extends BroadcastReceiver {
     private  static TextView textView;
+
+    public otpfetch() {
+    }
+
+    public otpfetch(TextView tv){
+        textView=tv;
+    }
     public void setEditText(TextView meditText)
     {
         textView =meditText;

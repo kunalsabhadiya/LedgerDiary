@@ -6,6 +6,26 @@ public class onlinemodel {
     String Cuid,Cphonenumber,Cname,Cimageuri;
     int Ctamount;
 
+    public void setCuid(String cuid) {
+        Cuid = cuid;
+    }
+
+    public void setCphonenumber(String cphonenumber) {
+        Cphonenumber = cphonenumber;
+    }
+
+    public void setCname(String cname) {
+        Cname = cname;
+    }
+
+    public void setCimageuri(String cimageuri) {
+        Cimageuri = cimageuri;
+    }
+
+    public void setCtamount(int ctamount) {
+        Ctamount = ctamount;
+    }
+
     public String getCuid() {
         return Cuid;
     }

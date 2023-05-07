@@ -156,38 +156,21 @@ SearchView groupsearchView;
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                        Date date = null;
-                        try {
-                            date = sdf.parse(String.format("%02d/%02d/%04d", dayOfMonth, month+1, year));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-
-
-
-                        mcalendar.setTime(date);
-                        int dayNumber = mcalendar.get(Calendar.DAY_OF_MONTH);
-                        int monthNumber = mcalendar.get(Calendar.MONTH);
-
-                        DateFormatSymbols dfs = new DateFormatSymbols(Locale.getDefault());
-                        String[] months = dfs.getMonths();
-                        String monthName = months[monthNumber];
-
-                        text = String.format("%02d %s", dayNumber, monthName);
-                        gedate.setText(text);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(year, month, dayOfMonth);
+                        Date date = calendar.getTime();
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+                        String formattedDate = sdf.format(date);
+                        gedate.setText(formattedDate);
                     }
                 },
                 initialYear,
                 initialMonth,
                 initialDay
         );
-        int mdayNumber = mcalendar.get(Calendar.DAY_OF_MONTH);
-        int mmonthNumber = mcalendar.get(Calendar.MONTH);
-        DateFormatSymbols mdfs = new DateFormatSymbols(Locale.getDefault());
-        String[] mmonths = mdfs.getMonths();
-        String mmonthName = mmonths[mmonthNumber];
-        String defaultDate = String.format("%02d %s", mdayNumber, mmonthName);
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+        String defaultDate = sdf.format(calendar.getTime());
         gedate.setText(defaultDate);
 
         gecalender.setOnClickListener(new View.OnClickListener() {

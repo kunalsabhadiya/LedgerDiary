@@ -7,7 +7,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -34,6 +37,7 @@ public class transactionadepter extends RecyclerView.Adapter {
     TextView citotal;
     String reciveruid;
     OnAdepterInterraction onAdepterInterraction;
+    Animation blink;
 
 
 
@@ -67,6 +71,7 @@ public class transactionadepter extends RecyclerView.Adapter {
         Date date=new Date(model.getTimestamp());
         SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a");
         String formattedTime = dateFormat.format(date);
+        blink= AnimationUtils.loadAnimation(context,R.anim.buttonbehaviour);
 
 
         if(holder.getClass() == senderViewHolder.class){
@@ -87,6 +92,7 @@ public class transactionadepter extends RecyclerView.Adapter {
                                         holder.itemView.setOnClickListener(new View.OnClickListener() {
                                             @Override
                                             public void onClick(View v) {
+                                                ViewHolder.rl.startAnimation(blink);
 
                                                 Intent intent=new Intent(context,updateTransaction.class);
                                                 intent.putExtra("timestamp", String.valueOf(model.getTimestamp()));
@@ -140,6 +146,7 @@ public class transactionadepter extends RecyclerView.Adapter {
 
     class senderViewHolder extends RecyclerView.ViewHolder {
         TextView time,description,amount,day,month;
+        RelativeLayout rl;
 
 
         public senderViewHolder(@NonNull View itemView) {
@@ -155,6 +162,7 @@ public class transactionadepter extends RecyclerView.Adapter {
             amount=itemView.findViewById(R.id.tamount);
             day=itemView.findViewById(R.id.day);
             month=itemView.findViewById(R.id.month);
+            rl=itemView.findViewById(R.id.rltransactionentry);
         }
     }
 
@@ -167,6 +175,7 @@ public class transactionadepter extends RecyclerView.Adapter {
             amount=itemView.findViewById(R.id.tamount);
             day=itemView.findViewById(R.id.day);
             month=itemView.findViewById(R.id.month);
+
         }
     }
     public interface OnAdepterInterraction{

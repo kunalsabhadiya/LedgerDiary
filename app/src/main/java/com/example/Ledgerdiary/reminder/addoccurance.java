@@ -158,7 +158,6 @@ boolean isclickspinner=false;
                                 selectedTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
                                 selectedTime.set(Calendar.MINUTE, minute);
                                 String selectedTimeString = timeFormat.format(selectedTime.getTime());
-
                                 occtime.setText(selectedTimeString);
                             }
                         }, 10, 0, false);

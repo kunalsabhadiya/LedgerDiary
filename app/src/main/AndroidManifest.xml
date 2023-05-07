@@ -5,10 +5,13 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
     <uses-permission android:name="android.permission.RECEIVE_SMS" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_SMS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
@@ -26,6 +29,24 @@
         android:theme="@style/Theme.LedgerDiary"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+        <activity
+            android:name=".userreporttransaction"
+            android:exported="false" />
+        <activity
+            android:name=".userreport"
+            android:exported="false" />
+        <activity
+            android:name=".offlinecustomer.oupdatetransaction"
+            android:exported="false" />
+        <activity
+            android:name=".offlinecustomer.offlinereceive"
+            android:exported="false" />
+        <activity
+            android:name=".offlinecustomer.offliensend"
+            android:exported="false" />
+        <activity
+            android:name=".offlinecustomer.ocustomerinterface"
+            android:exported="false" />
         <activity
             android:name=".setting"
             android:exported="false" />
@@ -79,6 +100,14 @@
             </intent-filter>
         </receiver>
 
+        <receiver
+            android:name=".Services.remindernotification"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.example.reminder.ACTION_NOTIFICATION" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".group.addgroupentry"
             android:exported="false"
@@ -127,6 +156,8 @@
         <activity
             android:name=".Dashboard"
             android:exported="false" />
+
+        <service android:name=".reminder.ReminderReceiver" />
     </application>
 
 </manifest>

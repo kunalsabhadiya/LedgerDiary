@@ -9,6 +9,7 @@
     android:layout_margin="7dp">
 
     <LinearLayout
+        android:id="@+id/lyfinalentry"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:padding="4dp"

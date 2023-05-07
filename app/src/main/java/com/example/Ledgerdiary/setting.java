@@ -3,6 +3,8 @@ package com.example.Ledgerdiary;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -60,8 +62,32 @@ String image,name;
         settingeditprofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                settingeditprofile.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.buttonbehaviour));
                 settingeditprofile.startAnimation(clickbtn);
                 startActivity(new Intent(setting.this,profile.class));
+            }
+        });
+
+        settinglogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                settinglogout.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),R.anim.buttonbehaviour));
+                AlertDialog.Builder builder = new AlertDialog.Builder(setting.this);
+                builder.setMessage("Are you sure you want to logout?")
+                        .setTitle("Logout ?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                FirebaseAuth.getInstance().signOut();
+                                startActivity(new Intent(setting.this,login.class));
+                            }
+                        })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                builder.create().show();
             }
         });
 

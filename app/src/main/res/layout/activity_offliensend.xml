@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".offlinecustomer.offliensend">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/back"
+            android:id="@+id/addbackbtn"
+            />
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/call"
+            android:id="@+id/addcallbtn"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="10dp"
+            />
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_toRightOf="@+id/addbackbtn"
+            android:layout_toLeftOf="@+id/addcallbtn"
+            android:layout_below="@+id/addbackbtn"
+            android:src="@drawable/profileimage"
+            android:id="@+id/addciprofile"
+            android:layout_marginBottom="4dp"
+            />
+
+        <TextView
+            android:id="@+id/addciname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/addciprofile"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="8dp"
+            android:text="name"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+
+
+        <RelativeLayout
+            android:id="@+id/addrlayout"
+            android:layout_width="match_parent"
+            android:layout_height="600dp"
+            android:layout_below="@id/addciname"
+            android:background="@drawable/transactionbg"
+            >
+
+            <TextView
+                android:id="@+id/addtransactiontext"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
+                android:text="You will receive"
+                android:textAlignment="center"
+                android:textColor="@color/texttitle"
+                android:textSize="32sp" />
+
+            <ImageView
+                android:id="@+id/rupee"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_below="@+id/addtransactiontext"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
+                android:layout_marginBottom="15dp"
+                android:src="@drawable/rupee" />
+            <EditText
+                android:textSize="25sp"
+                android:id="@+id/addamount"
+                android:layout_width="match_parent"
+                android:inputType="number"
+                android:layout_height="50dp"
+                android:hint="Add Amount"
+                android:backgroundTint="@color/toolbarc"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="15dp"
+                android:textColor="@color/gradcolor1"
+                android:layout_below="@id/addtransactiontext"
+                android:textColorHint="@color/hintcolor"
+                android:layout_toRightOf="@id/rupee"/>
+            <ImageView
+                android:id="@+id/desc"
+                android:layout_margin="15dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/description"
+                android:layout_below="@+id/rupee"
+                />
+            <EditText
+                android:id="@+id/adddescription"
+                android:textSize="25sp"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:hint="Add Description"
+                android:inputType="text"
+                android:backgroundTint="@color/toolbarc"
+                android:layout_marginBottom="15dp"
+                android:layout_marginRight="15dp"
+                android:textColor="@color/black"
+                android:layout_below="@id/addamount"
+                android:textColorHint="@color/hintcolor"
+                android:layout_toRightOf="@id/desc"/>
+            <RelativeLayout
+                android:id="@+id/layou2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/adddescription"
+                android:gravity="center"
+                >
+                <ImageView
+                    android:id="@+id/calander"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:src="@drawable/calendar" />
+                <TextView
+                    android:id="@+id/adddate"
+                    android:layout_marginLeft="10dp"
+                    android:layout_centerVertical="true"
+                    android:textSize="18sp"
+                    android:layout_toRightOf="@id/calander"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="23/08/2022"
+                    android:textColor="@color/hintcolor"/>
+
+            </RelativeLayout>
+            <Button
+                android:layout_width="180dp"
+                android:layout_height="60dp"
+                android:textSize="18sp"
+                android:text="save"
+                android:id="@+id/addsave"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/layou2"
+                android:layout_marginTop="30dp"
+                />
+
+
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+</ScrollView>

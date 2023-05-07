@@ -151,37 +151,21 @@ RelativeLayout addrlayout;
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                        Date date = null;
-                        try {
-                            date = sdf.parse(String.format("%02d/%02d/%04d", dayOfMonth, month + 1, year));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-
-
-                        mcalendar.setTime(date);
-                        int dayNumber = mcalendar.get(Calendar.DAY_OF_MONTH);
-                        int monthNumber = mcalendar.get(Calendar.MONTH);
-
-                        DateFormatSymbols dfs = new DateFormatSymbols(Locale.getDefault());
-                        String[] months = dfs.getMonths();
-                        String monthName = months[monthNumber];
-
-                        text = String.format("%02d %s", dayNumber, monthName);
-                        adddatetv.setText(text);
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.set(year, month, dayOfMonth);
+                        Date date = calendar.getTime();
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+                        String formattedDate = sdf.format(date);
+                        adddatetv.setText(formattedDate);
                     }
                 },
                 initialYear,
                 initialMonth,
                 initialDay
         );
-        int mdayNumber = mcalendar.get(Calendar.DAY_OF_MONTH);
-        int mmonthNumber = mcalendar.get(Calendar.MONTH);
-        DateFormatSymbols mdfs = new DateFormatSymbols(Locale.getDefault());
-        String[] mmonths = mdfs.getMonths();
-        String mmonthName = mmonths[mmonthNumber];
-        String defaultDate = String.format("%02d %s", mdayNumber, mmonthName);
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+        String defaultDate = sdf.format(calendar.getTime());
         adddatetv.setText(defaultDate);
         calander.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -240,7 +224,7 @@ RelativeLayout addrlayout;
                                                                                 .child(usernumber).child("Cuid").setValue(senderuid);
                                                                         FirebaseDatabase.getInstance().getReference().child("users")
                                                                                 .child(reciveruid).child("customer")
-                                                                                .child(usernumber).child("Ctamount").setValue("0");
+                                                                                .child(usernumber).child("Ctamount").setValue(0);
                                                                         FirebaseDatabase.getInstance().getReference().child("users")
                                                                                 .child(senderuid).child("imageUri").addValueEventListener(new ValueEventListener() {
                                                                                     @Override
@@ -265,8 +249,7 @@ RelativeLayout addrlayout;
                                                                 }
                                                             });
                                                     startActivity(new Intent(addTransaction.this,splashadd.class));
-                                                    gettoken(addamount.getText().toString(),reciverroom,name,number,imguri);
-                                                    finish();
+                                                     finish();
                                                 }
                                             });
                                 }
@@ -278,8 +261,6 @@ RelativeLayout addrlayout;
                 }
             }
         });
-
-
 
 
 
@@ -302,78 +283,5 @@ RelativeLayout addrlayout;
 
 
     }
-    private void gettoken(String amount, String roomid, String rname, String rnumber, String rimageuri) {
-        DatabaseReference usersRef = FirebaseDatabase.getInstance().getReference().child("users");
-
-        usersRef.child(reciveruid).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                rtoken = Objects.requireNonNull(snapshot.child("token").getValue()).toString();
-                sendNotification(amount, roomid, rname, rnumber, rimageuri);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("gettoken", "Database Error: " + error.getMessage());
-            }
-        });
-
-        usersRef.child(senderuid).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                sname = Objects.requireNonNull(snapshot.child("username").getValue()).toString();
-                simage = Objects.requireNonNull(snapshot.child("imageUri").getValue()).toString();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.d("gettoken", "Database Error: " + error.getMessage());
-            }
-        });
-    }
-
-    private void sendNotification(String amount, String roomid, String rname, String rnumber, String rimageuri) {
-        JSONObject to = new JSONObject();
-        JSONObject data = new JSONObject();
-        try {
-            data.put("title", sname);
-            data.put("message", "Transaction added: " + amount);
-            data.put("image", simage);
-            data.put("rimage", rimageuri);
-            data.put("id", reciveruid);
-            data.put("chatid", roomid);
-            data.put("number", rnumber);
-            data.put("name", rname);
-            to.put("token", rtoken);
-            to.put("data", data);
-        } catch (JSONException e) {
-            throw new RuntimeException(e);
-        }
-
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, "https://fcm.googleapis.com/fcm/send", to, response -> {
-            Log.d("notification", "Notification sent: " + response);
-        }, error -> {
-            Log.d("notification", "Notification send failed: " + error);
-        }) {
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> headers = new HashMap<>();
-                headers.put("Authorization", "key=AAAApKKw8xo:APA91bFZPz8GdPRTs8rk5MMePoyV-9C0tOGSVa8hJqLepytnAmPYALiQrCr7sfsC7RElLylV_De4_ugTLGtdX6vnt-hKivFxGKOltCyarrftmE9Hwl04fFH86r9FG_q--UcGTCIzgrSx");
-                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-
-            @Override
-            public String getBodyContentType() {
-                return "application/json";
-            }
-        };
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
-        request.setRetryPolicy(new DefaultRetryPolicy(30000, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        requestQueue.add(request);
-    }
-
-
 
 }

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         >
         <androidx.appcompat.widget.SearchView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:queryHint="Search by name..."
             android:inputType="text"
@@ -24,6 +24,16 @@
             android:layout_marginStart="17dp"
             android:layout_marginEnd="17dp"
             />
+        <ImageView
+            android:id="@+id/mixpdf"
+            android:layout_width="35dp"
+            android:layout_height="60dp"
+            android:layout_toRightOf="@id/onlinesearch"
+            android:src="@drawable/baseline_report"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="17dp"
+            />
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/online_user_recyclerview"

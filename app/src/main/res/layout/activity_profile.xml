@@ -61,7 +61,8 @@
         android:hint="Username"
         android:textColor="@color/black"
         android:textColorHint="#7C7B7B"
-
+        android:padding="10dp"
+        android:background="@drawable/dateboxbg"
         />
 
       <TextView
@@ -76,10 +77,11 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:text="+918989898989"
+          android:padding="10dp"
+          android:background="@drawable/dateboxbg"
           android:textColor="@color/black"
           android:textSize="20dp"
           android:id="@+id/pnumber"
-          android:padding="5dp"
           />
 
       <TextView
@@ -98,6 +100,8 @@
           android:hint="business"
           android:textColor="@color/black"
           android:textColorHint="#7C7B7B"
+          android:padding="10dp"
+          android:background="@drawable/dateboxbg"
           />
       <View
           android:layout_width="match_parent"

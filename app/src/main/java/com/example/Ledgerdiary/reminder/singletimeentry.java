@@ -1,5 +1,9 @@
 package com.example.Ledgerdiary.reminder;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,6 +26,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -43,6 +48,10 @@ List<singletimeentrymodel> list;
         list=new ArrayList<>();
         singletimeentryadepter=new singletimeentryadepter(getContext(),list);
         singlerc.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+
+
 
         FirebaseDatabase.getInstance().getReference().child("singlereminder")
                 .child(FirebaseAuth.getInstance().getUid())
@@ -86,4 +95,5 @@ List<singletimeentrymodel> list;
 
     return view;
     }
+
 }

@@ -6,6 +6,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +31,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class onlinercadepter extends RecyclerView.Adapter<onlinercadepter.ViewHolder> {
     Context context;
     ArrayList<onlinemodel> list,filteredList;
-    String img;
+    Animation blink;
 
 
 
@@ -52,7 +55,7 @@ public class onlinercadepter extends RecyclerView.Adapter<onlinercadepter.ViewHo
         holder.number.setText(model.getCphonenumber());
         Picasso.get().load(model.getCimageuri()).placeholder(R.drawable.profileimage).into(holder.image);
 
-
+       blink= AnimationUtils.loadAnimation(context,R.anim.buttonbehaviour);
         int amount=model.getCtamount();
         if(amount<0){
             holder.entryamount.setText(String.valueOf(Math.abs(amount)));
@@ -67,6 +70,7 @@ public class onlinercadepter extends RecyclerView.Adapter<onlinercadepter.ViewHo
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                holder.lyfinaletnry.startAnimation(blink);
                 Intent intent = new Intent(context, customerInterface.class);
                 intent.putExtra("ciname",model.getCname());
                 intent.putExtra("cnumber",model.getCphonenumber());
@@ -103,6 +107,7 @@ public class onlinercadepter extends RecyclerView.Adapter<onlinercadepter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
         CircleImageView image;
         TextView username,number,entryamount;
+        LinearLayout lyfinaletnry;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -111,6 +116,7 @@ public class onlinercadepter extends RecyclerView.Adapter<onlinercadepter.ViewHo
             username=itemView.findViewById(R.id.entryname);
             number=itemView.findViewById(R.id.entryphone);
             entryamount=itemView.findViewById(R.id.entryamount);
+            lyfinaletnry=itemView.findViewById(R.id.lyfinalentry);
 
 
         }

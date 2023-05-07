@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.room.Room;
 import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
@@ -33,6 +34,9 @@ import com.example.Ledgerdiary.dashboardFragment.fragmentadepter;
 
 import com.example.Ledgerdiary.dashboardFragment.onlineuser;
 import com.example.Ledgerdiary.group.addgroupentry;
+import com.example.Ledgerdiary.offlinecustomer.UserDao;
+import com.example.Ledgerdiary.offlinecustomer.citable;
+import com.example.Ledgerdiary.offlinecustomer.offlineDb;
 import com.example.Ledgerdiary.reminder.reminder;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -107,47 +111,31 @@ public class Dashboard extends AppCompatActivity {
         slideleft= AnimationUtils.loadAnimation(this,R.anim.rotate_slide_left);
         slideright= AnimationUtils.loadAnimation(this,R.anim.rotate_slide_right);
 
-        FirebaseDatabase.getInstance().getReference().child("users")
-                           .child(FirebaseAuth.getInstance().getUid()).child("onlineamount")
-                           .child("give").addValueEventListener(new ValueEventListener() {
-                               @Override
-                               public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                   sendonline.setText(String.valueOf(snapshot.getValue()));
-                               }
+        setOtotalvariable();
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-                               @Override
-                               public void onCancelled(@NonNull DatabaseError error) {
+            }
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 0:
+                        setOtotalvariable();
+                        break;
+                    case 1:
+                       setOfftotalvariable();
+                        break;
+                    default:
+                        setOtotalvariable();
+                }
+            }
 
-                               }
-                           });
-                   FirebaseDatabase.getInstance().getReference().child("users")
-                           .child(FirebaseAuth.getInstance().getUid()).child("onlineamount")
-                           .child("got").addValueEventListener(new ValueEventListener() {
-                       @Override
-                       public void onDataChange(@NonNull DataSnapshot snapshot) {
-                           reciveonline.setText(String.valueOf(snapshot.getValue()));
-                       }
+            @Override
+            public void onPageScrollStateChanged(int state) {
 
-                       @Override
-                       public void onCancelled(@NonNull DatabaseError error) {
-
-                       }
-                   });
-                   FirebaseDatabase.getInstance().getReference().child("users")
-                           .child(FirebaseAuth.getInstance().getUid()).child("onlineamount")
-                           .child("total").addValueEventListener(new ValueEventListener() {
-                       @Override
-                       public void onDataChange(@NonNull DataSnapshot snapshot) {
-                           onlinetotal.setText(String.valueOf(snapshot.getValue()));
-                       }
-
-                       @Override
-                       public void onCancelled(@NonNull DatabaseError error) {
-
-                       }
-                   });
-
-
+           }
+        });
 
 
 
@@ -254,6 +242,7 @@ public class Dashboard extends AppCompatActivity {
     }
 
 
+
     private void requestPermission(){
 
         isReadPermissionGranted = ContextCompat.checkSelfPermission(
@@ -328,7 +317,66 @@ public class Dashboard extends AppCompatActivity {
 
         return true;
     }
+    private void setOfftotalvariable() {
+        offlineDb db= Room.databaseBuilder(getApplicationContext(),offlineDb.class,"offlineusers").allowMainThreadQueries().build();
+        UserDao dao=db.userDao();
+        List<citable> list=dao.getofflineuser();
+        int send = 0,receive = 0;
+        for(int i=0;i<list.size();i++){
+            citable table=list.get(i);
+            if(table.getCitamount()>=0){
+                send+=table.getCitamount();
+            }else{
+                receive+=Math.abs(table.getCitamount());
+            }
+        }
+        sendonline.setText(String.valueOf(receive));
+        reciveonline.setText(String.valueOf(send));
+        onlinetotal.setText(String.valueOf(send-receive));
+    }
 
+    private void setOtotalvariable(){
+        FirebaseDatabase.getInstance().getReference().child("users")
+                .child(FirebaseAuth.getInstance().getUid()).child("onlineamount")
+                .child("give").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        sendonline.setText(String.valueOf(snapshot.getValue()));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+        FirebaseDatabase.getInstance().getReference().child("users")
+                .child(FirebaseAuth.getInstance().getUid()).child("onlineamount")
+                .child("got").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        reciveonline.setText(String.valueOf(snapshot.getValue()));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+        FirebaseDatabase.getInstance().getReference().child("users")
+                .child(FirebaseAuth.getInstance().getUid()).child("onlineamount")
+                .child("total").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        onlinetotal.setText(String.valueOf(snapshot.getValue()));
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+    }
 
 
     @Override
@@ -369,6 +417,8 @@ public class Dashboard extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        setOfftotalvariable();
+        setOtotalvariable();
         addentry.startAnimation(rotateclose);
         addgroup.hide();
         addgroup.startAnimation(slideright);
@@ -381,19 +431,7 @@ public class Dashboard extends AppCompatActivity {
         isclicked=true;
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        addgroup.hide();
-        addgroup.startAnimation(slideright);
-        addperson.hide();
-        addperson.startAnimation(slideright);
-        reminderbtn.hide();
-        reminderbtn.startAnimation(slideleft);
-        setting.hide();
-        setting.startAnimation(slideleft);
-        isclicked=true;
-    }
+
 
     @Override
     protected void onStop() {

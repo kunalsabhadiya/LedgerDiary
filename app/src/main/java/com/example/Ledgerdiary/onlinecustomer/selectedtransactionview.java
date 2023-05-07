@@ -24,6 +24,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.Ledgerdiary.R;
 
@@ -60,6 +61,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -72,6 +74,7 @@ TextView selectedname,selectednumber,selectedstartdate,selectedenddate,savepdf;
 long endtimestamp,starttimestamp;
 ArrayList<pdfmodel> list;
 pdfadapter pdfadapter;
+Date sdate,edate;
 RelativeLayout pdflayout;
 int total=0;
 
@@ -101,21 +104,21 @@ int total=0;
         selectedname.setText(name);
         selectednumber.setText(number);
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        Date date1=null,date2 = null;
+        SimpleDateFormat inputSdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+
+        SimpleDateFormat outputSdf = new SimpleDateFormat("dd MMM yyyy", Locale.getDefault());
+
+
         try {
-            date1 = dateFormat.parse(startdate);
-            date2 = dateFormat.parse(enddtae);
+            sdate= inputSdf.parse(startdate);
+            edate = inputSdf.parse(enddtae);
 
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        String startDateFormat = outputSdf.format(sdate);
+        String endDateFormat = outputSdf.format(edate);
 
-        if (date1 != null && date2!=null) {
-            starttimestamp = date1.getTime() ;
-            endtimestamp = date2.getTime();
-
-        }
 
         list=new ArrayList<>();
         pdfrc.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
@@ -124,19 +127,15 @@ int total=0;
         savepdf.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Create an intent to open the file manager
-                Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+              Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
                 intent.addFlags(Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
                 startActivityForResult(intent, 1);
-
-// In the onActivityResult() method, get the selected directory and save the PDF file to it
-
 
             }
         });
         FirebaseDatabase.getInstance().getReference().child("transactions")
-                .child(senderroom).orderByChild("timestamp").startAt(starttimestamp)
-                .endAt(endtimestamp).addListenerForSingleValueEvent(new ValueEventListener() {
+                .child(senderroom).orderByChild("date").startAt(startDateFormat).endAt(endDateFormat + "\uf8ff")
+              .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         list.clear();

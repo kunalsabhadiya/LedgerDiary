@@ -1,5 +1,6 @@
 package com.example.Ledgerdiary.onlinecustomer;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -15,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.Ledgerdiary.R;
+import com.example.Ledgerdiary.dashboardFragment.onlineuser;
+import com.example.Ledgerdiary.userreport;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -48,16 +51,17 @@ public class pdfGeneratorFragment extends BottomSheetDialogFragment {
         }
 
         String senderroom= FirebaseAuth.getInstance().getCurrentUser().getUid()+reciveruid;
-        startdate.setOnClickListener(new View.OnClickListener() {
+        tvstartdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePickerDialog(true);
             }
         });
 
-        enddate.setOnClickListener(new View.OnClickListener() {
+        tvenddate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 showDatePickerDialog(false);
             }
         });
@@ -66,13 +70,15 @@ public class pdfGeneratorFragment extends BottomSheetDialogFragment {
             @Override
             public void onClick(View v) {
                 if(!tvenddate.getText().toString().isEmpty() && !tvstartdate.getText().toString().isEmpty()){
-                    Intent intent=new Intent(getContext(),selectedtransactionview.class);
-                    intent.putExtra("startdate",tvstartdate.getText().toString());
-                    intent.putExtra("enddate",tvenddate.getText().toString());
-                    intent.putExtra("senderroom",senderroom);
-                    intent.putExtra("name",name);
-                    intent.putExtra("number",number);
-                    startActivity(intent);
+                        Intent intent=new Intent(getContext(),selectedtransactionview.class);
+                        intent.putExtra("startdate",tvstartdate.getText().toString());
+                        intent.putExtra("enddate",tvenddate.getText().toString());
+                        intent.putExtra("senderroom",senderroom);
+                        intent.putExtra("name",name);
+                        intent.putExtra("number",number);
+                        startActivity(intent);
+
+
                 }
             }
         });
@@ -108,6 +114,9 @@ public class pdfGeneratorFragment extends BottomSheetDialogFragment {
             }
         }, year, month, day);
         datePickerDialog.getDatePicker().setMaxDate(date.getTime());
+        if(!isStartDate){
+            datePickerDialog.getDatePicker().setMinDate(startDate.getTimeInMillis());
+        }
 
         datePickerDialog.show();
     }
@@ -116,16 +125,5 @@ public class pdfGeneratorFragment extends BottomSheetDialogFragment {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         textView.setText(sdf.format(date.getTime()));
     }
-/*
-    private Bitmap getBitmapFromView(View view) {
-        view.measure(View.MeasureSpec.makeMeasureSpec(view.getWidth(), View.MeasureSpec.EXACTLY), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
-        view.layout(0, 0, view.getMeasuredWidth(), view.getMeasuredHeight());
-        Bitmap bitmap = Bitmap.createBitmap(view.getMeasuredWidth(), view.getMeasuredHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        canvas.drawColor(Color.WHITE);
-        view.draw(canvas);
-        return bitmap;
-    }
 
- */
 }

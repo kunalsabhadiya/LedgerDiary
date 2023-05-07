@@ -10,6 +10,7 @@
     android:backgroundTint="@color/white">
 
     <RelativeLayout
+        android:id="@+id/rloccurance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="2dp"
@@ -110,8 +111,8 @@
                 android:layout_marginBottom="8dp"
                 android:text="250"
                 android:textColor="@color/gradcolor1"
-                android:textSize="28sp"
-                android:textStyle="bold" />
+                android:textSize="24sp"
+                android:fontFamily="@font/spartan_regular"/>
 
 
         </RelativeLayout>

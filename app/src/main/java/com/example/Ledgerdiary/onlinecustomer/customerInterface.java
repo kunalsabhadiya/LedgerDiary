@@ -130,15 +130,29 @@ transactionadepter transactionadepter;
                        popupView,
                        ViewGroup.LayoutParams.MATCH_PARENT,
                        ViewGroup.LayoutParams.WRAP_CONTENT);
-                    popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+
+               popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
+                   @Override
+                   public void onDismiss() {
+                       overlayView.setVisibility(View.GONE);
+                   }
+               });
+
+               popupWindow.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
                     popupWindow.setElevation(3);
                     popupWindow.setFocusable(true);
-                    popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
+                     popupWindow.showAtLocation(getWindow().getDecorView(), Gravity.CENTER, 0, 0);
                     EditText editTextNewName = popupView.findViewById(R.id.ppnewname);
                     Button buttonSave = popupView.findViewById(R.id.ppsave);
                     Button buttonCancel = popupView.findViewById(R.id.ppcancle);
                     CircleImageView imageView=popupView.findViewById(R.id.ppprofile);
                overlayView.setVisibility(View.VISIBLE);
+               overlayView.setOnClickListener(new View.OnClickListener() {
+                   @Override
+                   public void onClick(View view) {
+                       overlayView.setVisibility(View.GONE);
+                   }
+               });
                Picasso.get().load(imguri).placeholder(R.drawable.profileimage).into(imageView);
                    editTextNewName.setText(name);
                 buttonSave.setOnClickListener(new View.OnClickListener() {
@@ -164,6 +178,7 @@ transactionadepter transactionadepter;
                        overlayView.setVisibility(View.GONE);
                    }
                });
+
            }
        });
 
@@ -268,6 +283,8 @@ transactionadepter transactionadepter;
 
 
 
+
     }
+
 
 }

@@ -1,35 +1,35 @@
 package com.example.Ledgerdiary.dashboardFragment;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.Ledgerdiary.R;
-import com.example.Ledgerdiary.sqliteDbhelper;
+import com.example.Ledgerdiary.offlinecustomer.citable;
+import com.example.Ledgerdiary.offlinecustomer.ocustomerinterface;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class offlineadepter extends RecyclerView.Adapter<offlineadepter.Viewholder> {
 
     private Context context;
 
-    private ArrayList  c_name,c_number;
-    String id;
+    private List<citable>  list,filterdlist;
 
-
-    public offlineadepter(Context context, ArrayList c_name, ArrayList c_number) {
+    public offlineadepter(Context context, List<citable> list) {
         this.context = context;
-        this.c_name = c_name;
-        this.c_number = c_number;
-
+        this.list = list;
+        this.filterdlist=list;
     }
 
     @NonNull
@@ -41,10 +41,39 @@ public class offlineadepter extends RecyclerView.Adapter<offlineadepter.Viewhold
 
     @Override
     public void onBindViewHolder(@NonNull offlineadepter.Viewholder holder, int position) {
-        holder.name.setText(String.valueOf(c_name.get(position)));
-        holder.number.setText(String.valueOf(c_number.get(position)));
+       citable citable=filterdlist.get(position);
+        holder.name.setText(String.valueOf(citable.getCiname()));
+        holder.number.setText(String.valueOf(citable.getCiphonenumber()));
+        if(citable.getCitamount()<0){
+            holder.amount.setTextColor(ContextCompat.getColor(context,R.color.green));
+            holder.amount.setText(String.valueOf(Math.abs(citable.getCitamount())));
+        } else if (citable.getCitamount()==0) {
+            holder.amount.setText(String.valueOf(citable.getCitamount()));
+        }else{
+            holder.amount.setTextColor(ContextCompat.getColor(context,R.color.gradcolor1));
+            holder.amount.setText(String.valueOf(citable.getCitamount()));
+        }
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(context, ocustomerinterface.class);
+                context.startActivity(intent);
+            }
+        });
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(context,ocustomerinterface.class);
+                intent.putExtra("phonenumber",holder.number.getText().toString());
+                intent.putExtra("name",holder.name.getText().toString());
+                intent.putExtra("index",String.valueOf(citable.getCiuid()));
+                context.startActivity(intent);
+            }
+        });
+
+
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            sqliteDbhelper db=new sqliteDbhelper(context);
             @Override
             public boolean onLongClick(View v) {
 
@@ -54,10 +83,8 @@ public class offlineadepter extends RecyclerView.Adapter<offlineadepter.Viewhold
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        sqliteDbhelper myDB = new sqliteDbhelper(context);
-                        myDB.deleteentry(holder.getAdapterPosition()+1);
-                        notifyItemRemoved(holder.getAdapterPosition());
-                        notifyDataSetChanged();
+
+
                     }
                 });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -72,18 +99,31 @@ public class offlineadepter extends RecyclerView.Adapter<offlineadepter.Viewhold
         });
 
     }
-
+    public void filter(String query) {
+        filterdlist = new ArrayList<>();
+        if (query.isEmpty()) {
+            filterdlist = list;
+        } else {
+            for (citable item : list) {
+                if (item.getCiname().toLowerCase().contains(query.toLowerCase())) {
+                    filterdlist.add(item);
+                }
+            }
+        }
+        notifyDataSetChanged();
+    }
     @Override
     public int getItemCount() {
-        return c_name.size();
+        return filterdlist.size();
     }
 
     public class Viewholder extends RecyclerView.ViewHolder {
-       TextView name,number;
+       TextView name,number,amount;
         public Viewholder(@NonNull View itemView) {
             super(itemView);
             name=itemView.findViewById(R.id.entryname);
             number=itemView.findViewById(R.id.entryphone);
+            amount=itemView.findViewById(R.id.entryamount);
         }
     }
 
